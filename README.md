@@ -1,7 +1,10 @@
 # CPPVisualization
 Project to visualize dependencies inside a cpp project.
 
-## install
-
+## Install/Launch
+```
 npm install
+```
+```
 npm start
+```

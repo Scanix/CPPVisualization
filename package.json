@@ -1,0 +1,24 @@
+{
+  "name": "CPPVisualization",
+  "version": "1.0.0",
+  "description": "Project to visualize dependencies inside a cpp project.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron ./src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Scanix/CPPVisualization.git"
+  },
+  "keywords": [],
+  "author": "Alexandre Bianchi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Scanix/CPPVisualization/issues"
+  },
+  "homepage": "https://github.com/Scanix/CPPVisualization#readme",
+  "devDependencies": {
+    "electron": "^10.1.5"
+  }
+}

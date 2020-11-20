@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>CPPVisualization</title>
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-</head>
-<body>
-    <h1>Electron <script>document.write(process.versions.electron)</script></h1>
-    <script type="module" src="./project-structure-loader.js"></script>
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<title>CPPVisualization</title>
+		<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+	</head>
+	<body>
+		
+		<script type="module">
+			import selectFile from './main.js';
+			window.selectFile = selectFile;
+		</script>
+	
+		<h1>Electron <script>document.write(process.versions.electron)</script></h1>
+		
+		<button onclick="selectFile();">Select File</button> 
+	</body>
 </html>

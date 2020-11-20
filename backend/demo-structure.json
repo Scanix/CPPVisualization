@@ -1,0 +1,45 @@
+{
+    "meta": {},
+    "filesChanged": [
+        "includes/entities/player.h",
+        "..."
+    ],
+    "files": [
+        {
+            "id": "includes/entities/player.h",
+            "type": "header",
+            "path": [
+                "includes",
+                "entities"
+            ],
+            "stats": {
+                "lineCount": 23
+            },
+            "filename": "player.h",
+            "includes": [
+                "includes/file1.h",
+                "..."
+            ],
+            "calls": [
+                {
+                    "namespace": "",
+                    "functionName": "",
+                    "functionArgs": [
+                        {
+                            "types": [
+                                "double",
+                                "float",
+                                "..."
+                            ],
+                            "names": [
+                                "a",
+                                "b",
+                                ".."
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

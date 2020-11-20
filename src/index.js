@@ -1,7 +1,10 @@
 /**
- * @author Alexandre Bianchi
+ * @author Alexandre Bianchi, Loïck Jeanneret
  */
 const { app, BrowserWindow } = require('electron')
+const fileWatcher = require("../backend/file-watcher.js");
+
+fileWatcher.addEvents();
 
 function createWindow () {
   const win = new BrowserWindow({

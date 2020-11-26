@@ -10,13 +10,9 @@
 		<div id="header"></div>
 		<iframe src="header.html" onload="this.before((this.contentDocument.body||this.contentDocument).children[0]);this.remove()"></iframe>
 
-		<script type="module">
-			import selectFile from './main.js';
-			window.selectFile = selectFile;
-		</script>
-
 		<h1>Files selection</h1>
 
-		<button onclick="selectFile();">Select Folder</button>
+		<script type="module" src="main.js"></script>
+	    <button id="browse-project">Select CPP project folder</button>
 	</body>
 </html>

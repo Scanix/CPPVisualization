@@ -20,5 +20,8 @@
   "homepage": "https://github.com/Scanix/CPPVisualization#readme",
   "devDependencies": {
     "electron": "^10.1.5"
+  },
+  "dependencies": {
+    "d3": "^6.2.0"
   }
 }

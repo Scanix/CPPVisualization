@@ -6,17 +6,13 @@
 		<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
 		<link rel="stylesheet" href="styles.css">
 	</head>
-	<body
-		<div id="header"></div>
+	<body>
+        <div id="header"></div>
 		<iframe src="header.html" onload="this.before((this.contentDocument.body||this.contentDocument).children[0]);this.remove()"></iframe>
 
-		<script type="module">
-			import selectFile from './main.js';
-			window.selectFile = selectFile;
-		</script>
+		<h1>MSE VI - 2020</h1>
+        <h2>Bianchi Alexandre, Jeanneret Loïck, Bilali Saljajdin, Rubin Vincent</h2>
 
-		<h1>Files selection</h1>
-
-		<button onclick="selectFile();">Select Folder</button>
+        <p>Ce projet a été réalisé dans le cadre d'un projet MSE pour le cours de visualization.</p>
 	</body>
 </html>

@@ -22,6 +22,7 @@
     "electron": "^10.1.5"
   },
   "dependencies": {
+    "chokidar": "^3.4.3",
     "recursive-readdir": "^2.2.2"
   }
 }

@@ -1,5 +1,6 @@
 const { ipcMain, dialog, BrowserWindow } = require("electron");
 const projectParser = require("./project-parser.js");
+const chokidar = require("chokidar");
 
 module.exports.addEvents = function () {
     ipcMain.on("open-project-picker", (event, arg) => {
@@ -18,8 +19,16 @@ module.exports.addEvents = function () {
  * @param {string} path 
  */
 function watchProject(path) {
-    // TODO: This should watch and parse project
-    // For now, it just sends the json once
+    // Parse and send project the first time
+    parseAndSendProject(path);
+
+    // Watch for any changes in the directory
+    chokidar.watch(path, { ignoreInitial: true }).on("all", (_event, _changedPath) => {
+        parseAndSendProject(path);
+    });
+}
+
+function parseAndSendProject(path) {
     projectParser.parseProject(path).then((projectStructure) => {
         sendProjectStructure(projectStructure);
     });

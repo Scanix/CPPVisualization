@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const recurseReaddir = require("recursive-readdir");
 
-function parseProject(projectPath) {
+function parseProject(projectPath, changedPath) {
     const jsonOutput = {
         meta: {},
         filesChanged: [],
@@ -26,6 +26,11 @@ function parseProject(projectPath) {
                 const type = getFileType(fileName);
                 const stats = {};
                 const calls = [];
+
+                // Was this file changed?
+                if (changedPath && files[i].includes(changedPath)) {
+                    jsonOutput.filesChanged.push(id);
+                }
 
                 jsonOutput.files.push({
                     id,

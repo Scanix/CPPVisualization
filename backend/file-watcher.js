@@ -23,13 +23,14 @@ function watchProject(path) {
     parseAndSendProject(path);
 
     // Watch for any changes in the directory
-    chokidar.watch(path, { ignoreInitial: true }).on("all", (_event, _changedPath) => {
-        parseAndSendProject(path);
+    chokidar.watch(path, { ignoreInitial: true }).on("all", (_event, changedPath) => {
+        // TODO: In the future if we have more time, when a folder change only parse the project once and group changed files
+        parseAndSendProject(path, changedPath);
     });
 }
 
-function parseAndSendProject(path) {
-    projectParser.parseProject(path).then((projectStructure) => {
+function parseAndSendProject(path, changedPath) {
+    projectParser.parseProject(path, changedPath).then((projectStructure) => {
         sendProjectStructure(projectStructure);
     });
 }

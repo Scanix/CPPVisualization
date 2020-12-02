@@ -1,5 +1,6 @@
 const { ipcMain, remote, dialog, BrowserWindow } = require("electron");
 const tempJson = require("./demo-structure.json");
+const projectParser = require("./project-parser.js");
 
 module.exports.addEvents = function () {
     ipcMain.on("open-project-picker", (event, arg) => {
@@ -20,10 +21,10 @@ module.exports.addEvents = function () {
 function watchProject(path) {
     // TODO: This should watch and parse project, for now it just sends dummy data
     sendProjectStructure(tempJson);
-
-    setInterval(() => {
-        sendProjectStructure(tempJson);
-    }, 5000);
+    projectParser.parseProject(path).then((projectStructure) => {
+        // TODO: Send to front
+        console.log(projectStructure);
+    });
 }
 
 /**

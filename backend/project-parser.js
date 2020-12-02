@@ -3,49 +3,49 @@ const fs = require("fs");
 const path = require("path");
 const recurseReaddir = require("recursive-readdir");
 
-function parseProject() {
+function parseProject(projectPath) {
     const jsonOutput = {
         meta: {},
         filesChanged: [],
         files: []
     };
+    return new Promise((resolve, reject) => {
+        recurseReaddir(projectPath, (err, files) => {
+            // We do 2 passes, one that create basic information and one that parses details
+            // This is done so we can search file names as order of files is not predictable
+            for (let i = 0; i < files.length; i++) {
+                const fullFilePathSplitted = files[i].split(path.sep); // Convert string path to array
+                const filePath = fullFilePathSplitted.slice(1); // Remove first entry which is the name of the folder of the project
+                const folderPath = filePath.slice(0, filePath.length - 1); // Remove file name from path
 
-    recurseReaddir("demo-cpp-project", (err, files) => {
-        // We do 2 passes, one that create basic information and one that parses details
-        // This is done so we can search file names as order of files is not predictable
-        for (let i = 0; i < files.length; i++) {
-            const fullFilePathSplitted = files[i].split(path.sep); // Convert string path to array
-            const filePath = fullFilePathSplitted.slice(1); // Remove first entry which is the name of the folder of the project
-            const folderPath = filePath.slice(0, filePath.length - 1); // Remove file name from path
+                const fileName = fullFilePathSplitted.slice(-1)[0];
+                const id = filePath.join("/");
+                const type = getFileType(fileName);
+                const stats = {};
+                const calls = [];
 
-            const fileName = fullFilePathSplitted.slice(-1)[0];
-            const id = filePath.join("/");
-            const type = getFileType(fileName);
-            const stats = {};
-            const calls = [];
+                jsonOutput.files.push({
+                    id,
+                    type,
+                    path: folderPath,
+                    stats,
+                    fileName,
+                    calls
+                });
+            }
 
-            jsonOutput.files.push({
-                id,
-                type,
-                path: folderPath,
-                stats,
-                fileName,
-                calls
-            });
-        }
+            for (let i = 0; i < files.length; i++) {
+                const jsonFile = jsonOutput.files[i];
+                const fileContent = fs.readFileSync(files[i], "utf8");
+                const parsedFile = parseFile(fileContent, jsonOutput.files);
 
-        for (let i = 0; i < files.length; i++) {
-            const jsonFile = jsonOutput.files[i];
-            const fileContent = fs.readFileSync(files[i], "utf8");
-            const parsedFile = parseFile(fileContent, jsonOutput.files);
+                jsonFile.stats.lineCount = parsedFile.stats.lineCount;
+                jsonFile.includes = parsedFile.includes;
+            }
 
-            jsonFile.stats.lineCount = parsedFile.stats.lineCount;
-            jsonFile.includes = parsedFile.includes;
-        }
-
-        console.log(jsonOutput.files);
+            resolve(jsonOutput);
+        });
     });
-
 }
 
 function getFileType(fileName) {
@@ -106,4 +106,4 @@ function parseIncludes(fileContent, files) {
     return includes;
 }
 
-parseProject();
+module.exports.parseProject = parseProject;

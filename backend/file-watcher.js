@@ -1,5 +1,4 @@
 const { ipcMain, dialog, BrowserWindow } = require("electron");
-const tempJson = require("./demo-structure.json");
 const projectParser = require("./project-parser.js");
 
 module.exports.addEvents = function () {
@@ -8,7 +7,7 @@ module.exports.addEvents = function () {
             properties: ["openDirectory"]
         }).then((files) => {
             if (files !== undefined) {
-                watchProject(files);
+                watchProject(files.filePaths[0]);
             }
         });
     })
@@ -19,11 +18,10 @@ module.exports.addEvents = function () {
  * @param {string} path 
  */
 function watchProject(path) {
-    // TODO: This should watch and parse project, for now it just sends dummy data
-    sendProjectStructure(tempJson);
+    // TODO: This should watch and parse project
+    // For now, it just sends the json once
     projectParser.parseProject(path).then((projectStructure) => {
-        // TODO: Send to front
-        console.log(projectStructure);
+        sendProjectStructure(projectStructure);
     });
 }
 

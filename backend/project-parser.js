@@ -9,13 +9,16 @@ function parseProject(projectPath) {
         filesChanged: [],
         files: []
     };
+
     return new Promise((resolve, reject) => {
+        const parentFolderCount = projectPath.split(path.sep).length;
+
         recurseReaddir(projectPath, (err, files) => {
             // We do 2 passes, one that create basic information and one that parses details
             // This is done so we can search file names as order of files is not predictable
             for (let i = 0; i < files.length; i++) {
                 const fullFilePathSplitted = files[i].split(path.sep); // Convert string path to array
-                const filePath = fullFilePathSplitted.slice(1); // Remove first entry which is the name of the folder of the project
+                const filePath = fullFilePathSplitted.slice(parentFolderCount); // Remove entries which are parent of the project folder
                 const folderPath = filePath.slice(0, filePath.length - 1); // Remove file name from path
 
                 const fileName = fullFilePathSplitted.slice(-1)[0];

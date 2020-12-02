@@ -1,7 +1,6 @@
 // TODO: Parse project files
 const fs = require("fs");
 const path = require("path");
-const { exit } = require("process");
 const recurseReaddir = require("recursive-readdir");
 
 function parseProject() {
@@ -23,7 +22,7 @@ function parseProject() {
             const id = filePath.join("/");
             const type = getFileType(fileName);
             const stats = {};
-            const variables = [];
+            const calls = [];
 
             jsonOutput.files.push({
                 id,
@@ -31,7 +30,7 @@ function parseProject() {
                 path: folderPath,
                 stats,
                 fileName,
-                variables
+                calls
             });
         }
 
@@ -43,7 +42,6 @@ function parseProject() {
             jsonFile.stats.lineCount = parsedFile.stats.lineCount;
             jsonFile.includes = parsedFile.includes;
         }
-
 
         console.log(jsonOutput.files);
     });
@@ -58,7 +56,7 @@ function getFileType(fileName) {
         case "h":
             return "header";
         case undefined:
-            return null;
+            return "";
         default:
             return extension;
     }
@@ -69,6 +67,7 @@ function parseFile(fileContent, files) {
     const includes = parseIncludes(fileContent, files);
 
     // Function parsing requires more than regex as we can't count parenthesis, this could be done in a better way someday
+    // The following regex could be used to identify function position and then use basic state machine to find matching parenthesis
     // const functionRegex = /([a-zA-Z_][a-zA-Z_0-9.->]+)(\.|->)([a-zA-Z_][a-zA-Z_0-9]+)\(/gm;
 
     return {
@@ -88,7 +87,6 @@ function parseIncludes(fileContent, files) {
     for (const match of matches) {
         let matchFound = false;
 
-        // console.log(match[1]);
         for (let i = 0; i < files.length; i++) {
             const fileId = files[i].id;
             if (fileId.includes(match[1])) {
@@ -100,6 +98,7 @@ function parseIncludes(fileContent, files) {
 
         if (!matchFound) {
             // External library / cannot find match
+            // TODO: Add a flag to tell that the library is not set?
             includes.push(match[1]);
         }
     }

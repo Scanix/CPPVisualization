@@ -20,5 +20,8 @@
   "homepage": "https://github.com/Scanix/CPPVisualization#readme",
   "devDependencies": {
     "electron": "^10.1.5"
+  },
+  "dependencies": {
+    "recursive-readdir": "^2.2.2"
   }
 }

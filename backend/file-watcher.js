@@ -1,4 +1,4 @@
-const { ipcMain, remote, dialog, BrowserWindow } = require("electron");
+const { ipcMain, dialog, BrowserWindow } = require("electron");
 const tempJson = require("./demo-structure.json");
 const projectParser = require("./project-parser.js");
 
@@ -32,5 +32,5 @@ function watchProject(path) {
  * @param {object} obj 
  */
 function sendProjectStructure(obj) {
-    BrowserWindow.getFocusedWindow().webContents.send("project-structure-updated", JSON.stringify(obj));
+    BrowserWindow.getAllWindows()[0].webContents.send("project-structure-updated", JSON.stringify(obj));
 }

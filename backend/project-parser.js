@@ -11,10 +11,6 @@ function parseProject() {
         files: []
     };
 
-    // Save tree of files to access it faster. Files is an object and we have its id as a value for easy lookup
-    // NOTE: Code related to file tree is currently not used at is it not required
-    const fileTree = { files: {} };
-
     recurseReaddir("demo-cpp-project", (err, files) => {
         // We do 2 passes, one that create basic information and one that parses details
         // This is done so we can search file names as order of files is not predictable
@@ -28,32 +24,6 @@ function parseProject() {
             const type = getFileType(fileName);
             const stats = {};
             const variables = [];
-
-            // Build file tree
-            if (folderPath.length === 0) {
-                // root
-                fileTree.files[fileName] = id;
-            }
-            else {
-                if (!fileTree[folderPath[0]]) {
-                    fileTree[folderPath[0]] = { files: {} };
-                }
-
-                let currentFolder = fileTree[folderPath[0]];
-
-                // Create folder structure
-                for (let j = 1; j < folderPath.length; j++) {
-                    const folderName = folderPath[j];
-                    if (!currentFolder[folderName]) {
-                        currentFolder[folderName] = { files: {} };
-                    }
-
-                    currentFolder = currentFolder[folderName];
-                }
-
-                // Found last folder, "append" file
-                currentFolder.files[fileName] = id;
-            }
 
             jsonOutput.files.push({
                 id,

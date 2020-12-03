@@ -25,7 +25,7 @@ export default class ChordGraph {
 
         this.innerRadius = Math.min(this.width, this.height) * 0.5 - 90
         this.outerRadius = this.innerRadius + 10
-        this.color = d3.scaleOrdinal(this.names, d3.quantize(d3.interpolateViridis, this.names.length))
+        this.color = d3.scaleOrdinal(this.names, d3.quantize(d3.interpolateRainbow, this.names.length))
         this.ribbon = d3.ribbonArrow()
             .radius(this.innerRadius - 1)
             .padAngle(1 / this.innerRadius)
@@ -65,6 +65,11 @@ export default class ChordGraph {
         };
     }
 
+    getFilename(path) {
+        let arr = path.split('/');
+        return arr[arr.length - 1];
+    }
+
     createGraph() {
 
         let svg = d3.select(this.svgClass)
@@ -102,7 +107,7 @@ export default class ChordGraph {
                   ${d.angle > Math.PI ? "rotate(180)" : ""}
                 `)
             .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
-            .text(d => this.names[d.index])
+            .text(d => this.getFilename(this.names[d.index]))
 
         group.append("title")
             .text(d => `${this.names[d.index]}

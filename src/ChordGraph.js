@@ -74,6 +74,7 @@ export default class ChordGraph {
 
             d3.select(svgClass).selectAll('.group path')
                 .filter(function(d) { return d.index != i.index && !sources.includes(d.index) })
+                .select(function() { return this.parentNode; })
                 .transition()
                 .style("opacity", opacity);
         };

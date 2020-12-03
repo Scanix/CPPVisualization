@@ -106,12 +106,12 @@ export default class ChordGraph {
             .selectAll("g")
             .data(this.chords.groups)
             .join("g")
+            .on("mouseover", this.fade(this.svgClass, .1))
+            .on("mouseout", this.fade(this.svgClass, 1));
 
         group.append("path")
             .attr("fill", d => this.color(this.names[d.index]))
-            .attr("d", this.arc)
-            .on("mouseover", this.fade(this.svgClass, .1))
-            .on("mouseout", this.fade(this.svgClass, 1));
+            .attr("d", this.arc);
 
 
         group.append("text")

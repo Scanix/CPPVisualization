@@ -34,20 +34,21 @@
                     <div class="item-header">
                         <p>Diagramme de dépendances</p>
                     </div>
-                    <svg class="d3-graphe" overflow="auto"></svg>
+                    <svg class="d3-other" overflow="auto"></svg>
                 </div>
                 <div class="grid-item grid-item--width3">
                     <div class="item-header">
                         <p>Diagramme de dépendances</p>
                     </div>
-                    <svg class="d3-other" overflow="auto"></svg>
+                    <svg class="d3-graph" overflow="auto"></svg>
                 </div>
             </div>
         </div>
     </div>
     <script type="module" src="./project-structure-loader.js"></script>
-    <!--<script src="./graph.js"></script>-->
-    <script src="./chord.js"></script>
+    <script type="module" src="./ChordGraph.js"></script>
+    <script type="module" src="./GraphGraph.js"></script>
+    <script src="./main.js"></script>
     <script>
         const Masonry = require('masonry-layout')
 

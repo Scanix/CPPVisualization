@@ -105,6 +105,10 @@ nav {
     border-left: 1px dashed gray;
 }
 
+.tree-folder-item:hover, .tree-folder-name:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 .has-icon:before {
     content: "";
     background-repeat: no-repeat;
@@ -150,4 +154,11 @@ nav {
     padding-top: 2px;
     cursor: pointer;
 }
+
+.highlighted {
+    background-color: #6A8DA9;
+}
+
+.highlighted:hover {
+    background-color: #6A8DA9;
 }

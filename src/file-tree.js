@@ -1,7 +1,7 @@
 export default class FileTree {
     constructor(targetElement) {
-        console.log(targetElement);
         this._targetElement = targetElement;
+        this._selectedFolders = [];
     }
 
     _getFileIcon(type) {
@@ -41,6 +41,14 @@ export default class FileTree {
             const fileNameDiv = document.createElement("div");
             fileNameDiv.className = "tree-folder-item has-icon " + this._getFileIcon(folder.files[fileName].type);
             fileNameDiv.textContent = fileName;
+
+            fileNameDiv.addEventListener("click", (event) => {
+                if (!event.ctrlKey) {
+                    // TODO: Only select multiple if ctrl is pressed
+                }
+                fileNameDiv.classList.toggle("highlighted");
+            });
+
             folderDiv.appendChild(fileNameDiv);
         }
 
@@ -48,7 +56,10 @@ export default class FileTree {
     }
 
     update(projectStructure) {
-        const fileTree = { files: {}, folders: {} };
+        const fileTreeRoot = { files: {}, folders: { "Project folder": { files: {}, folders: {} } } };
+        const fileTree = fileTreeRoot.folders["Project folder"];
+
+        // const fileTree = fileTreeRoot.folders["Root folder"];
 
         for (let i = 0; i < projectStructure.files.length; i++) {
             const file = projectStructure.files[i];
@@ -58,7 +69,7 @@ export default class FileTree {
             // Build file tree	
             if (folderPath.length === 0) {
                 // root	
-                fileTree.files[file.filename] = file.id;
+                fileTree.files[file.filename] = file;
             }
             else {
                 // children of root
@@ -79,13 +90,13 @@ export default class FileTree {
                 }
 
                 // Found last folder, "append" file	
-                currentFolder.files[file.filename] = file.id;
+                currentFolder.files[file.filename] = file;
             }
         }
 
         this._targetElement.innerHTML = "";
         this._targetElement.appendChild(
-            this._displayFolder(fileTree, true)
+            this._displayFolder(fileTreeRoot, true)
         );
     }
 }

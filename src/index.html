@@ -1,12 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>CPPVisualization</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" href="css/main.css">
 </head>
+
 <body>
-    <h1>Electron <script>document.write(process.versions.electron)</script></h1>
+    <nav>
+        <p>Electron
+            <script>
+                document.write(process.versions.electron)
+            </script>
+        </p>
+    </nav>
+    <div class="container-main">
+        <div class="container-tree" id="file-tree">
+            <div class="file-tree-header">
+                <div>File tree</div>
+                <input type="text" placeholder="Search file...">
+            </div>
+            <div id="file-tree-files"></div>
+        </div>
+        <div class="container-grid">
+            <div class="grid">
+                <div class="grid-sizer"></div>
+                <div class="gutter-sizer"></div>
+                <div class="grid-item grid-item--width3">
+                    <div class="item-header">
+                        <p>Diagramme de dépendances</p>
+                    </div>
+                    <svg class="d3-chord" overflow="auto"></svg>
+                </div>
+                <div class="grid-item">
+                    <div class="item-header">
+                        <p>Diagramme de dépendances</p>
+                    </div>
+                    <svg class="d3-graphe" overflow="auto"></svg>
+                </div>
+                <div class="grid-item grid-item--width3">
+                    <div class="item-header">
+                        <p>Diagramme de dépendances</p>
+                    </div>
+                    <svg class="d3-other" overflow="auto"></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="./main.js"></script>
     <script type="module" src="./project-structure-loader.js"></script>
+    <!--<script src="./graph.js"></script>-->
+    <script src="./chord.js"></script>
+    <script>
+        const Masonry = require('masonry-layout')
+
+        // Load masonry
+        let grid = document.querySelector('.grid');
+        let msnry = new Masonry(grid, {
+            itemSelector: '.grid-item',
+            columnWidth: '.grid-sizer',
+            percentPosition: true,
+            horizontalOrder: true,
+            gutter: '.gutter-sizer',
+        });
+    </script>
 </body>
+
 </html>

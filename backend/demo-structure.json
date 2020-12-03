@@ -1,45 +1,226 @@
 {
     "meta": {},
-    "filesChanged": [
-        "includes/entities/player.h",
-        "..."
-    ],
+    "filesChanged": [],
     "files": [
         {
-            "id": "includes/entities/player.h",
+            "id": "includes/entities/chicken.h",
             "type": "header",
             "path": [
                 "includes",
                 "entities"
             ],
             "stats": {
-                "lineCount": 23
+                "lineCount": 7
             },
-            "filename": "player.h",
+            "filename": "chicken.h",
+            "includes": [],
+            "calls": []
+        },
+        {
+            "id": "includes/entities/cow.h",
+            "type": "header",
+            "path": [
+                "includes",
+                "entities"
+            ],
+            "stats": {
+                "lineCount": 18
+            },
+            "filename": "cow.h",
             "includes": [
-                "includes/file1.h",
-                "..."
+                "includes/entities/entity.h"
+            ],
+            "calls": []
+        },
+        {
+            "id": "includes/entities/entity.h",
+            "type": "header",
+            "path": [
+                "includes",
+                "entities"
+            ],
+            "stats": {
+                "lineCount": 15
+            },
+            "filename": "entity.h",
+            "includes": [
+                "iostream",
+                "includes/position.h"
+            ],
+            "calls": []
+        },
+        {
+            "id": "includes/entities/pig.h",
+            "type": "header",
+            "path": [
+                "includes",
+                "entities"
+            ],
+            "stats": {
+                "lineCount": 16
+            },
+            "filename": "pig.h",
+            "includes": [
+                "includes/entities/entity.h",
+                "includes/bucket.h"
+            ],
+            "calls": []
+        },
+        {
+            "id": "includes/bucket.h",
+            "type": "header",
+            "path": [
+                "includes"
+            ],
+            "stats": {
+                "lineCount": 16
+            },
+            "filename": "bucket.h",
+            "includes": [
+                "iostream",
+                "includes/entities/pig.h"
+            ],
+            "calls": []
+        },
+        {
+            "id": "includes/position.h",
+            "type": "header",
+            "path": [
+                "includes"
+            ],
+            "stats": {
+                "lineCount": 4
+            },
+            "filename": "position.h",
+            "includes": [],
+            "calls": []
+        },
+        {
+            "id": "src/bucket.cpp",
+            "type": "source",
+            "path": [
+                "src"
+            ],
+            "stats": {
+                "lineCount": 19
+            },
+            "filename": "bucket.cpp",
+            "includes": [
+                "includes/bucket.h"
+            ],
+            "calls": []
+        },
+        {
+            "id": "src/chicken.cpp",
+            "type": "source",
+            "path": [
+                "src"
+            ],
+            "stats": {
+                "lineCount": 1
+            },
+            "filename": "chicken.cpp",
+            "includes": [],
+            "calls": []
+        },
+        {
+            "id": "src/cow.cpp",
+            "type": "source",
+            "path": [
+                "src"
+            ],
+            "stats": {
+                "lineCount": 24
+            },
+            "filename": "cow.cpp",
+            "includes": [
+                "includes/entities/cow.h",
+                "includes/bucket.h"
             ],
             "calls": [
                 {
-                    "namespace": "",
-                    "functionName": "",
-                    "functionArgs": [
-                        {
-                            "types": [
-                                "double",
-                                "float",
-                                "..."
-                            ],
-                            "names": [
-                                "a",
-                                "b",
-                                ".."
-                            ]
-                        }
+                    "fileId": "includes/entities/cow.h",
+                    "methodName": "fill",
+                    "args": [
+                        "10",
+                        "\"milk\""
                     ]
                 }
             ]
+        },
+        {
+            "id": "src/pig.cpp",
+            "type": "source",
+            "path": [
+                "src"
+            ],
+            "stats": {
+                "lineCount": 19
+            },
+            "filename": "pig.cpp",
+            "includes": [
+                "includes/entities/pig.h"
+            ],
+            "calls": [
+                {
+                    "fileId": "includes/bucket.h",
+                    "methodName": "fill",
+                    "args": [
+                        "0",
+                        "\"\""
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "main.cpp",
+            "type": "source",
+            "path": [],
+            "stats": {
+                "lineCount": 25
+            },
+            "filename": "main.cpp",
+            "includes": [
+                "iostream",
+                "includes/bucket.h",
+                "includes/entities/cow.h",
+                "includes/entities/pig.h"
+            ],
+            "calls": [
+                {
+                    "fileId": "includes/entities/cow.h",
+                    "methodName": "eat",
+                    "args": []
+                },
+                {
+                    "fileId": "includes/entities/pig.h",
+                    "methodName": "eat",
+                    "args": []
+                },
+                {
+                    "fileId": "includes/entities/cow.h",
+                    "methodName": "makeMilk",
+                    "args": [
+                        "bucket"
+                    ]
+                },
+                {
+                    "fileId": "includes/bucket.h",
+                    "methodName": "printContent",
+                    "args": []
+                }
+            ]
+        },
+        {
+            "id": "README.md",
+            "type": "md",
+            "path": [],
+            "stats": {
+                "lineCount": 25
+            },
+            "filename": "README.md",
+            "includes": [],
+            "calls": []
         }
     ]
 }

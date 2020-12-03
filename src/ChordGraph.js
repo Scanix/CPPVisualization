@@ -58,8 +58,22 @@ export default class ChordGraph {
 
     fade(svgClass, opacity) {
         return function(g, i) {
+            let sources = [];
+
             d3.select(svgClass).selectAll('.chord path')
-                .filter(function(d) { return d.source.index != i.index && d.target.index != i.index; })
+                .filter(function(d) {
+                    let result = d.source.index != i.index && d.target.index != i.index;
+                    if (!result) {
+                        sources.push(d.source.index);
+                        sources.push(d.target.index);
+                    }
+                    return result;
+                })
+                .transition()
+                .style("opacity", opacity);
+
+            d3.select(svgClass).selectAll('.group path')
+                .filter(function(d) { return d.index != i.index && !sources.includes(d.index) })
                 .transition()
                 .style("opacity", opacity);
         };
@@ -87,6 +101,7 @@ export default class ChordGraph {
         const group = zoomPart.append("g")
             .attr("font-size", 10)
             .attr("font-family", "sans-serif")
+            .attr("class", "group")
             .selectAll("g")
             .data(this.chords.groups)
             .join("g")

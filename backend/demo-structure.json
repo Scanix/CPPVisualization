@@ -175,9 +175,7 @@
         {
             "id": "main.cpp",
             "type": "source",
-            "path": [
-                ""
-            ],
+            "path": [],
             "stats": {
                 "lineCount": 25
             },
@@ -212,6 +210,17 @@
                     "args": []
                 }
             ]
+        },
+        {
+            "id": "README.md",
+            "type": "md",
+            "path": [],
+            "stats": {
+                "lineCount": 25
+            },
+            "filename": "README.md",
+            "includes": [],
+            "calls": []
         }
     ]
 }

@@ -25,7 +25,8 @@ nav {
     height: 100%;
     top: 50px;
     left: 0px;
-    background-color: darkslategray;
+    overflow: auto;
+    border-right: 1px solid black;
 }
 
 .container-grid {
@@ -64,6 +65,22 @@ nav {
     box-sizing: border-box;
 }
 
+.file-tree-header {
+    border-bottom: 1px solid black;
+    font-weight: bold;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.file-tree-header div {
+    padding: 10px;
+}
+
+.file-tree-header input {
+    width: 100%;
+    padding: 5px;
+}
+
 .item-header {
     position: absolute;
     width: 100%;
@@ -75,4 +92,27 @@ nav {
 
 .item-header>p {
     margin: 0px;
+}
+
+#file-tree-files {
+    padding-left: 10px;
+}
+
+.tree-folder {
+
+    margin-bottom: 5px;
+
+    padding-left: 10px;
+    margin-left: 10px;
+    border-left: 1px dashed gray;
+}
+
+.tree-folder-name {
+    font-weight: bold;
+    padding-top: 5px;
+    cursor: pointer;
+}
+
+.tree-folder-item {
+   margin-left: 10px;
 }

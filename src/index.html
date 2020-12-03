@@ -17,8 +17,12 @@
         </p>
     </nav>
     <div class="container-main">
-        <div class="container-tree">
-
+        <div class="container-tree" id="file-tree">
+            <div class="file-tree-header">
+                <div>File tree</div>
+                <input type="text" placeholder="Search file...">
+            </div>
+            <div id="file-tree-files"></div>
         </div>
         <div class="container-grid">
             <div class="grid">
@@ -45,6 +49,7 @@
             </div>
         </div>
     </div>
+    <script type="module" src="./main.js"></script>
     <script type="module" src="./project-structure-loader.js"></script>
     <!--<script src="./graph.js"></script>-->
     <script src="./chord.js"></script>

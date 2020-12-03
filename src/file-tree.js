@@ -4,6 +4,16 @@ export default class FileTree {
         this._targetElement = targetElement;
     }
 
+    _getFileIcon(type) {
+        const types = {
+            "source": "icon-source",
+            "header": "icon-header"
+        };
+
+        type = types[type] || "icon-file";
+        return type;
+    }
+
     _displayFolder(folder, root = false) {
         const folderDiv = document.createElement("div");
         if (!root) {
@@ -12,8 +22,8 @@ export default class FileTree {
 
         for (const folderName in folder.folders) {
             const folderNameDiv = document.createElement("div");
-            folderNameDiv.className = "tree-folder-name";
-            folderNameDiv.textContent = "📁 " + folderName;
+            folderNameDiv.className = "tree-folder-name has-icon icon-folder-open";
+            folderNameDiv.textContent = folderName;
 
             folderDiv.appendChild(folderNameDiv);
 
@@ -23,7 +33,7 @@ export default class FileTree {
 
         for (const fileName in folder.files) {
             const fileNameDiv = document.createElement("div");
-            fileNameDiv.className = "tree-folder-item";
+            fileNameDiv.className = "tree-folder-item has-icon " + this._getFileIcon(folder.files[fileName].type);
             fileNameDiv.textContent = fileName;
             folderDiv.appendChild(fileNameDiv);
         }

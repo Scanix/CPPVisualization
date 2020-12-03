@@ -107,6 +107,38 @@ nav {
     border-left: 1px dashed gray;
 }
 
+.has-icon:before {
+    content: "";
+    background-repeat: no-repeat;
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 5px;
+    vertical-align: -0.2em;
+    display: inline-block;
+}
+
+
+.icon-folder-open:before {
+    background: url("../../icons/folder-open.svg");
+}
+
+.icon-folder-closed:before {
+    background: url("../../icons/folder-closed.svg");
+}
+
+.icon-header:before {
+    background: url("../../icons/header-file.svg");
+}
+
+.icon-source:before {
+    background: url("../../icons/cpp-file.svg");
+}
+
+.icon-file:before {
+    background: url("../../icons/file.svg");
+}
+
+
 .tree-folder-name {
     font-weight: bold;
     padding-top: 5px;

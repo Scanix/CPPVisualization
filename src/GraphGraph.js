@@ -3,6 +3,7 @@ const d3 = require("d3")
 module.exports = class ChordGraph {
     width = 300
     height = 300
+    svg
 
     constructor() {}
 
@@ -41,12 +42,21 @@ module.exports = class ChordGraph {
         let svg = d3.select(svgClass)
             .attr("viewBox", [0, 0, this.width, this.height])
 
+        let zoomPart = svg.append("g")
+
+        const zoom = d3.zoom().on("zoom", e => {
+            zoomPart.attr("transform", (e.transform));
+        })
+
+        d3.select(svgClass)
+            .call(zoom)
+
         const simulation = d3.forceSimulation(nodes)
             .force("link", d3.forceLink(links).id(d => d.id))
             .force("charge", d3.forceManyBody())
             .force("center", d3.forceCenter(this.width / 2, this.height / 2))
 
-        const link = svg.append("g")
+        const link = zoomPart.append("g")
             .attr("stroke", "#999")
             .attr("stroke-opacity", 0.6)
             .selectAll("line")
@@ -54,7 +64,7 @@ module.exports = class ChordGraph {
             .join("line")
             .attr("stroke-this.width", d => Math.sqrt(d.value))
 
-        const node = svg.append("g")
+        const node = zoomPart.append("g")
             .attr("stroke", "#fff")
             .attr("stroke-this.width", 1.5)
             .selectAll("rect")

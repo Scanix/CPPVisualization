@@ -1,13 +1,12 @@
 const d3 = require("d3")
 
 module.exports = class ChordGraph {
-    width = 1000;
-    height = 1000;
+    width = 500;
+    height = 500;
 
-    constructor() {}
-
-    createGraph(svgClass, filesData) {
-        const data = Array.from(d3.rollup(filesData
+    constructor(svgClass, filesData) {
+        this.svgClass = svgClass
+        this.data = Array.from(d3.rollup(filesData
                 .flatMap(({
                     id: source,
                     includes
@@ -22,80 +21,104 @@ module.exports = class ChordGraph {
                 }), link => link.join())
             .values())
 
-        const names = Array.from(new Set(data.flatMap(d => [d.source, d.target]))).sort(d3.ascending)
+        this.names = Array.from(new Set(this.data.flatMap(d => [d.source, d.target]))).sort(d3.ascending)
 
-        const innerRadius = Math.min(this.width, this.height) * 0.5 - 90
-        const outerRadius = innerRadius + 10
-        const color = d3.scaleOrdinal(names, d3.quantize(d3.interpolateViridis, names.length))
-        const ribbon = d3.ribbonArrow()
-            .radius(innerRadius - 1)
-            .padAngle(1 / innerRadius)
-        const arc = d3.arc()
-            .innerRadius(innerRadius)
-            .outerRadius(outerRadius)
-        const chord = d3.chordDirected()
-            .padAngle(10 / innerRadius)
+        this.innerRadius = Math.min(this.width, this.height) * 0.5 - 90
+        this.outerRadius = this.innerRadius + 10
+        this.color = d3.scaleOrdinal(this.names, d3.quantize(d3.interpolateViridis, this.names.length))
+        this.ribbon = d3.ribbonArrow()
+            .radius(this.innerRadius - 1)
+            .padAngle(1 / this.innerRadius)
+        this.arc = d3.arc()
+            .innerRadius(this.innerRadius)
+            .outerRadius(this.outerRadius)
+        this.chord = d3.chordDirected()
+            .padAngle(10 / this.innerRadius)
             .sortSubgroups(d3.descending)
             .sortChords(d3.descending)
-        const matrix = () => {
-            const index = new Map(names.map((name, i) => [name, i]))
-            const matrix = Array.from(index, () => new Array(names.length).fill(0))
+        this.matrix = () => {
+            const index = new Map(this.names.map((name, i) => [name, i]))
+            const matrix = Array.from(index, () => new Array(this.names.length).fill(0))
             for (const { source, target, value }
-                of data) matrix[index.get(source)][index.get(target)] += value
+                of this.data) matrix[index.get(source)][index.get(target)] += value
             return matrix
         }
 
-        let svg = d3.select(svgClass)
+        this.chords = this.chord(this.matrix())
+    }
+
+    overedArc(event, d) {
+        d3.select(this).attr("fill", "red");
+        d3.selectAll(this.chords)
+    }
+
+    outedArc(event, d) {
+
+    }
+
+    fade(svgClass, opacity) {
+        return function(g, i) {
+            d3.select(svgClass).selectAll('.chord path')
+                .filter(function(d) { return d.source.index != i.index && d.target.index != i.index; })
+                .transition()
+                .style("opacity", opacity);
+        };
+    }
+
+    createGraph() {
+
+        let svg = d3.select(this.svgClass)
             .attr("viewBox", [-this.width / 2, -this.height / 2, this.width, this.height])
 
         let zoomPart = svg.append("g")
 
         const zoom = d3.zoom().on("zoom", e => {
-            console.log(zoomPart[0]);
             zoomPart.attr("transform", (e.transform));
         })
 
-        d3.select(svgClass)
+        d3.select(this.svgClass)
             .call(zoom)
-
-        const chords = chord(matrix())
 
         const group = zoomPart.append("g")
             .attr("font-size", 10)
             .attr("font-family", "sans-serif")
             .selectAll("g")
-            .data(chords.groups)
+            .data(this.chords.groups)
             .join("g")
 
         group.append("path")
-            .attr("fill", d => color(names[d.index]))
-            .attr("d", arc)
+            .attr("fill", d => this.color(this.names[d.index]))
+            .attr("d", this.arc)
+            .on("mouseover", this.fade(this.svgClass, .1))
+            .on("mouseout", this.fade(this.svgClass, 1));
+
 
         group.append("text")
             .each(d => (d.angle = (d.startAngle + d.endAngle) / 2))
             .attr("dy", "0.35em")
             .attr("transform", d => `
                   rotate(${(d.angle * 180 / Math.PI - 90)})
-                  translate(${outerRadius + 5})
+                  translate(${this.outerRadius + 5})
                   ${d.angle > Math.PI ? "rotate(180)" : ""}
                 `)
             .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
-            .text(d => names[d.index])
+            .text(d => this.names[d.index])
 
         group.append("title")
-            .text(d => `${names[d.index]}
-            ${d3.sum(chords, c => (c.source.index === d.index) * c.source.value)} outgoing →
-            ${d3.sum(chords, c => (c.target.index === d.index) * c.source.value)} incoming ←`)
+            .text(d => `${this.names[d.index]}
+            ${d3.sum(this.chords, c => (c.source.index === d.index) * c.source.value)} outgoing →
+            ${d3.sum(this.chords, c => (c.target.index === d.index) * c.source.value)} incoming ←`)
 
         zoomPart.append("g")
             .attr("fill-opacity", 0.75)
+            .attr("class", "chord")
             .selectAll("path")
-            .data(chords)
+            .data(this.chords)
             .join("path")
             .style("mix-blend-mode", "multiply")
-            .attr("fill", d => color(names[d.target.index]))
-            .attr("d", ribbon)
+            .attr("fill", d => this.color(this.names[d.target.index]))
+            .attr("d", this.ribbon)
             .append("title")
-            .text(d => `${names[d.source.index]} → ${names[d.target.index]} ${d.source.value}`)
+            .text(d => `${this.names[d.source.index]} → ${this.names[d.target.index]} ${d.source.value}`)
     }
 }

@@ -10,10 +10,7 @@
 
 <body>
     <nav>
-        <p>Electron
-            <script>
-                document.write(process.versions.electron)
-            </script>
+        <p>CPPVisualization
         </p>
     </nav>
     <div class="container-main">
@@ -25,6 +22,7 @@
             <div id="file-tree-files"></div>
         </div>
         <div class="container-grid">
+            <h2>Statistiques du projet</h2>
             <div class="grid">
                 <div class="grid-sizer"></div>
                 <div class="gutter-sizer"></div>
@@ -38,21 +36,19 @@
                     <div class="item-header">
                         <p>Diagramme de dépendances</p>
                     </div>
-                    <svg class="d3-graphe" overflow="auto"></svg>
+                    <svg class="d3-other" overflow="auto"></svg>
                 </div>
                 <div class="grid-item grid-item--width3">
                     <div class="item-header">
                         <p>Diagramme de dépendances</p>
                     </div>
-                    <svg class="d3-other" overflow="auto"></svg>
+                    <svg class="d3-graph" overflow="auto"></svg>
                 </div>
             </div>
         </div>
     </div>
     <script type="module" src="./main.js"></script>
     <script type="module" src="./project-structure-loader.js"></script>
-    <!--<script src="./graph.js"></script>-->
-    <script src="./chord.js"></script>
     <script>
         const Masonry = require('masonry-layout')
 

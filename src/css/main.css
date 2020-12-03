@@ -13,6 +13,7 @@ nav {
     left: 0;
     background-color: darkgrey;
     z-index: 10;
+    padding: 0px 10px;
 }
 
 .container-main {
@@ -37,7 +38,7 @@ nav {
 
 .grid-item {
     margin-top: 20px;
-    height: 500px;
+    height: 900px;
     box-sizing: border-box;
     border: black 1px solid;
 }

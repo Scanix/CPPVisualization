@@ -40,7 +40,7 @@ export default class ChordGraph {
             const index = new Map(this.names.map((name, i) => [name, i]))
             const matrix = Array.from(index, () => new Array(this.names.length).fill(0))
             for (const { source, target, value }
-                of this.data) matrix[index.get(source)][index.get(target)] += value
+                of this.data) matrix[index.get(target)][index.get(source)] += value
             return matrix
         }
 
@@ -106,8 +106,8 @@ export default class ChordGraph {
 
         group.append("title")
             .text(d => `${this.names[d.index]}
-            ${d3.sum(this.chords, c => (c.source.index === d.index) * c.source.value)} outgoing →
-            ${d3.sum(this.chords, c => (c.target.index === d.index) * c.source.value)} incoming ←`)
+            included in ${d3.sum(this.chords, c => (c.source.index === d.index) * c.source.value)} →
+            ${d3.sum(this.chords, c => (c.target.index === d.index) * c.source.value)} includes ←`)
 
         zoomPart.append("g")
             .attr("fill-opacity", 0.75)
@@ -116,7 +116,7 @@ export default class ChordGraph {
             .data(this.chords)
             .join("path")
             .style("mix-blend-mode", "multiply")
-            .attr("fill", d => this.color(this.names[d.target.index]))
+            .attr("fill", d => this.color(this.names[d.source.index]))
             .attr("d", this.ribbon)
             .append("title")
             .text(d => `${this.names[d.source.index]} → ${this.names[d.target.index]} ${d.source.value}`)

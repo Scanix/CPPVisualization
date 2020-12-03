@@ -9,32 +9,32 @@ let mainWindow;
 fileWatcher.addEvents();
 
 function createMainWindow() {
-  const win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true
-    }
-  })
+    const win = new BrowserWindow({
+        width: 1280,
+        height: 720,
+        webPreferences: {
+            nodeIntegration: true
+        }
+    })
 
-  win.loadFile('index.html')
-  win.webContents.openDevTools()
+    win.loadFile('index.html')
+        // win.webContents.openDevTools()
 
-  return win
+    return win
 }
 
 app.on("ready", () => {
-  mainWindow = createMainWindow()
+    mainWindow = createMainWindow()
 })
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
+    if (process.platform !== 'darwin') {
+        app.quit()
+    }
 })
 
 app.on('activate', () => {
-  if (!mainWindow) {
-    mainWindow = createMainWindow()
-  }
+    if (!mainWindow) {
+        mainWindow = createMainWindow()
+    }
 })

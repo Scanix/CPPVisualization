@@ -22,6 +22,7 @@
     "electron": "^10.1.5"
   },
   "dependencies": {
-    "d3": "^6.2.0"
+    "d3": "^6.2.0",
+    "masonry-layout": "^4.2.2"
   }
 }

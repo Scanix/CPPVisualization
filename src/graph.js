@@ -34,7 +34,7 @@ data.files.forEach((e) => {
     })
 })
 
-let svg = d3.select('svg.d3')
+let svg = d3.select('svg.d3-graphe')
     .attr("viewBox", [0, 0, width, height])
 
 const simulation = d3.forceSimulation(nodes)

@@ -25,10 +25,16 @@ export default class FileTree {
             folderNameDiv.className = "tree-folder-name has-icon icon-folder-open";
             folderNameDiv.textContent = folderName;
 
-            folderDiv.appendChild(folderNameDiv);
+            const children = this._displayFolder(folder.folders[folderName]);
 
-            const childFolder = folder.folders[folderName];
-            folderDiv.appendChild(this._displayFolder(childFolder));
+            folderNameDiv.addEventListener("click", () => {
+                folderNameDiv.classList.toggle("icon-folder-closed");
+                folderNameDiv.classList.toggle("icon-folder-open");
+                children.classList.toggle("collapsed");
+            });
+
+            folderDiv.appendChild(folderNameDiv);
+            folderDiv.appendChild(children);
         }
 
         for (const fileName in folder.files) {

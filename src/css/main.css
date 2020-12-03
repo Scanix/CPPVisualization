@@ -99,9 +99,7 @@ nav {
 }
 
 .tree-folder {
-
     margin-bottom: 5px;
-
     padding-left: 10px;
     margin-left: 10px;
     border-left: 1px dashed gray;
@@ -117,6 +115,9 @@ nav {
     display: inline-block;
 }
 
+.collapsed {
+    display: none;
+}
 
 .icon-folder-open:before {
     background: url("../../icons/folder-open.svg");
@@ -141,10 +142,12 @@ nav {
 
 .tree-folder-name {
     font-weight: bold;
-    padding-top: 5px;
+    padding-top: 2px;
     cursor: pointer;
 }
 
 .tree-folder-item {
-   margin-left: 10px;
+    padding-top: 2px;
+    cursor: pointer;
+}
 }

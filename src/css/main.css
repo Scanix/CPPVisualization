@@ -163,3 +163,11 @@ nav {
 .highlighted:hover {
     background-color: #6A8DA9;
 }
+
+.search-not-found {
+    color: #aaa;
+}
+
+.file-not-found {
+    display: none;
+}

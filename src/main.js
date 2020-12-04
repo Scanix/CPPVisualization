@@ -3,9 +3,8 @@ import ChordGraph from "./ChordGraph.js";
 import GraphGraph from "./GraphGraph.js";
 const tempJson = require("../backend/demo-structure.json");
 
-const fileTree = new FileTree(document.getElementById("file-tree-files"));
-fileTree.update(tempJson);
-
+const fileTree = new FileTree(document.getElementById("file-tree-files"), document.getElementById("search-file"));
+fileTree.update(json);
 let chord = new ChordGraph('svg.d3-chord', tempJson.files);
 let graph = new GraphGraph();
 

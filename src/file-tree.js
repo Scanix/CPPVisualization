@@ -1,7 +1,45 @@
 export default class FileTree {
-    constructor(targetElement) {
+    constructor(targetElement, searchBar) {
         this._targetElement = targetElement;
         this._selectedFolders = [];
+        this._fileTree = {};
+
+        searchBar.addEventListener("keyup", (event) => {
+            this._handleSearchBar(searchBar.value, this._fileTree);
+        });
+    }
+
+    _showFolderParents(parent) {
+        parent.nameDiv.classList.remove("file-not-found");
+        parent.nameDiv.classList.remove("icon-folder-closed");
+        parent.nameDiv.classList.add("icon-folder-open");
+        parent.folderDiv.classList.remove("collapsed");
+
+        if (parent.parent) {
+            this._showFolderParents(parent.parent);
+        }
+    }
+
+    _handleSearchBar(search, folder) {
+        for (const folderName in folder.folders) {
+            // Hide all folders
+            folder.folders[folderName].nameDiv.classList.add("file-not-found");
+            this._handleSearchBar(search, folder.folders[folderName]);
+        }
+
+        // Find file
+        for (const fileName in folder.files) {
+            const file = folder.files[fileName];
+            if (fileName.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
+                file.div.classList.remove("file-not-found");
+                this._showFolderParents(folder);
+            }
+            else {
+                file.div.classList.add("file-not-found");
+            }
+        }
+
+
     }
 
     _getFileIcon(type) {
@@ -16,12 +54,15 @@ export default class FileTree {
 
     _displayFolder(folder, root = false) {
         const folderDiv = document.createElement("div");
+        folder.folderDiv = folderDiv;
+
         if (!root) {
             folderDiv.className = "tree-folder";
         }
 
         for (const folderName in folder.folders) {
             const folderNameDiv = document.createElement("div");
+            folder.folders[folderName].nameDiv = folderNameDiv;
             folderNameDiv.className = "tree-folder-name has-icon icon-folder-open";
             folderNameDiv.textContent = folderName;
 
@@ -39,6 +80,8 @@ export default class FileTree {
 
         for (const fileName in folder.files) {
             const fileNameDiv = document.createElement("div");
+            folder.files[fileName].div = fileNameDiv;
+
             fileNameDiv.className = "tree-folder-item has-icon " + this._getFileIcon(folder.files[fileName].type);
             fileNameDiv.textContent = fileName;
 
@@ -69,7 +112,7 @@ export default class FileTree {
             // Build file tree	
             if (folderPath.length === 0) {
                 // root	
-                fileTree.files[file.filename] = file;
+                fileTree.files[file.name] = file;
             }
             else {
                 // children of root
@@ -83,16 +126,18 @@ export default class FileTree {
                 for (let j = 1; j < folderPath.length; j++) {
                     const folderName = folderPath[j];
                     if (!currentFolder.folders[folderName]) {
-                        currentFolder.folders[folderName] = { files: {}, folders: {} };
+                        currentFolder.folders[folderName] = { files: {}, folders: {}, parent: currentFolder };
                     }
 
                     currentFolder = currentFolder.folders[folderName];
                 }
 
                 // Found last folder, "append" file	
-                currentFolder.files[file.filename] = file;
+                currentFolder.files[file.name] = file;
             }
         }
+
+        this._fileTree = fileTree;
 
         this._targetElement.innerHTML = "";
         this._targetElement.appendChild(

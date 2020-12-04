@@ -10,12 +10,15 @@ export default class FileTree {
 
         buttons.resetSearch.addEventListener("click", () => {
             this._resetSelection();
+            dispatchEvent(new CustomEvent('treeSelectionEvent'))
         });
         buttons.headers.addEventListener("click", () => {
             this._selectType("header");
+            dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems } }))
         });
         buttons.sources.addEventListener("click", () => {
             this._selectType("source");
+            dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems } }))
         });
 
         searchBar.addEventListener("keyup", (event) => {
@@ -67,8 +70,7 @@ export default class FileTree {
             if (fileName.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
                 file.div.classList.remove("file-not-found");
                 this._showFolderParents(folder);
-            }
-            else {
+            } else {
                 file.div.classList.add("file-not-found");
             }
         }
@@ -87,8 +89,7 @@ export default class FileTree {
     _highlightAllChildren(folder, highlight) {
         if (highlight) {
             folder.nameDiv.classList.add("highlighted");
-        }
-        else {
+        } else {
             folder.nameDiv.classList.remove("highlighted");
         }
 
@@ -99,8 +100,7 @@ export default class FileTree {
                     file.div.classList.add("highlighted");
                     this._selectedItems.push(file);
                 }
-            }
-            else {
+            } else {
                 if (file.div.classList.contains("highlighted")) {
                     file.div.classList.remove("highlighted");
                     this._selectedItems.splice(this._selectedItems.indexOf(file), 1);
@@ -133,12 +133,12 @@ export default class FileTree {
             folderNameDiv.addEventListener("click", (event) => {
                 if (event.ctrlKey) {
                     this._highlightAllChildren(folder.folders[folderName], !folderNameDiv.classList.contains("highlighted"));
-                }
-                else {
+                } else {
                     folderNameDiv.classList.toggle("icon-folder-closed");
                     folderNameDiv.classList.toggle("icon-folder-open");
                     children.classList.toggle("collapsed");
                 }
+                dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems } }))
             });
 
             folderDiv.appendChild(folderNameDiv);
@@ -157,17 +157,16 @@ export default class FileTree {
                     // TODO: Make sure highlighted is not used for something else
                     this._resetSelection();
                     fileNameDiv.classList.add("highlighted");
-                }
-                else {
+                } else {
                     fileNameDiv.classList.toggle("highlighted");
                 }
 
                 if (fileNameDiv.classList.contains("highlighted")) {
                     this._selectedItems.push(folder.files[fileName]);
-                }
-                else {
+                } else {
                     this._selectedItems.splice(this._selectedItems.indexOf(folder.files[fileName]), 1);
                 }
+                dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems } }))
             });
 
             folderDiv.appendChild(fileNameDiv);
@@ -191,8 +190,7 @@ export default class FileTree {
             if (folderPath.length === 0) {
                 // root	
                 fileTree.files[file.name] = file;
-            }
-            else {
+            } else {
                 // children of root
                 if (!fileTree.folders[folderPath[0]]) {
                     fileTree.folders[folderPath[0]] = { files: {}, folders: {} };

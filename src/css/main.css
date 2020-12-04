@@ -38,7 +38,7 @@ nav {
 
 .grid-item {
     margin-top: 20px;
-    height: 900px;
+    height: 800px;
     box-sizing: border-box;
     border: black 1px solid;
 }
@@ -106,7 +106,8 @@ nav {
     border-left: 1px dashed gray;
 }
 
-.tree-folder-item:hover, .tree-folder-name:hover {
+.tree-folder-item:hover,
+.tree-folder-name:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -143,7 +144,6 @@ nav {
 .icon-file:before {
     background: url("../../icons/file.svg");
 }
-
 
 .tree-folder-name {
     font-weight: bold;

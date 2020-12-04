@@ -23,8 +23,9 @@
     },
     "dependencies": {
         "chokidar": "^3.4.3",
-        "recursive-readdir": "^2.2.2",
         "d3": "^6.2.0",
-        "masonry-layout": "^4.2.2"
+        "masonry-layout": "^4.2.2",
+        "path-sort": "^0.1.0",
+        "recursive-readdir": "^2.2.2"
     }
 }

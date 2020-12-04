@@ -21,7 +21,10 @@ export default class ChordGraph {
                 }), link => link.join())
             .values())
 
-        this.names = Array.from(new Set(this.data.flatMap(d => [d.source, d.target]))).sort(d3.ascending)
+        let sorter = require('path-sort').standalone('/')
+        this.names = Array.from(new Set(this.data.flatMap(d => [d.source, d.target]))).sort(sorter).sort(d3.ascending)
+
+        console.log(this.names)
 
         this.innerRadius = Math.min(this.width, this.height) * 0.5 - 90
         this.outerRadius = this.innerRadius + 10

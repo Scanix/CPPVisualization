@@ -173,3 +173,7 @@ nav {
 .file-not-found {
     display: none;
 }
+
+.hidden {
+    display: none;
+}

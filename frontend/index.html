@@ -37,23 +37,20 @@
             <div class="grid">
                 <div class="grid-sizer"></div>
                 <div class="gutter-sizer"></div>
-                <div class="grid-item grid-item--width3">
-                    <div class="item-header">
-                        <p>Diagramme de dépendances</p>
+
+                <div id="graphs-container" class="grid-item grid-item--width3">
+                    <div class="graph-display" data-graph-name="Graph coord">
+                        <svg class="d3-chord" overflow="auto"></svg>
                     </div>
-                    <svg class="d3-chord" overflow="auto"></svg>
-                </div>
-                <div class="grid-item">
-                    <div class="item-header">
-                        <p>Diagramme de dépendances</p>
+                    <div class="graph-display" data-graph-name="Graph tree">
+                        <svg class="d3-tree" overflow="auto"></svg>
                     </div>
-                    <svg class="d3-other" overflow="auto"></svg>
-                </div>
-                <div class="grid-item grid-item--width3">
-                    <div class="item-header">
-                        <p>Diagramme de dépendances</p>
+                    <div class="graph-display" data-graph-name="Line count">
+                        <svg class="d3-code" overflow="auto"></svg>
                     </div>
-                    <svg class="d3-graph" overflow="auto"></svg>
+                    <div class="graph-display" data-graph-name="About">
+                        <h1>About</h1>
+                    </div>
                 </div>
             </div>
         </div>

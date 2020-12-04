@@ -1,5 +1,4 @@
-html,
-body {
+html, body {
     padding: 0px;
     margin: 0px;
     font-family: sans-serif;
@@ -43,8 +42,7 @@ nav {
     border: black 1px solid;
 }
 
-.grid-sizer,
-.grid-item {
+.grid-sizer, .grid-item {
     width: 23%;
 }
 
@@ -97,6 +95,8 @@ nav {
 
 #file-tree-files {
     padding-left: 10px;
+    /* TODO: Only disable double-click select */
+    user-select: none;
 }
 
 .tree-folder {
@@ -104,10 +104,6 @@ nav {
     padding-left: 10px;
     margin-left: 10px;
     border-left: 1px dashed gray;
-}
-
-.tree-folder-item:hover, .tree-folder-name:hover {
-    background-color: rgba(19, 138, 235, 0.5);
 }
 
 .has-icon:before {
@@ -144,7 +140,6 @@ nav {
     background: url("../../icons/file.svg");
 }
 
-
 .tree-folder-name {
     padding-top: 2px;
     cursor: pointer;
@@ -156,6 +151,10 @@ nav {
 }
 
 .highlighted {
+    background-color: rgba(19, 138, 235, 0.3);
+}
+
+.tree-folder-item:hover, .tree-folder-name:hover {
     background-color: rgba(19, 138, 235, 0.3);
 }
 

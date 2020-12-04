@@ -107,7 +107,7 @@ nav {
 }
 
 .tree-folder-item:hover, .tree-folder-name:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(19, 138, 235, 0.5);
 }
 
 .has-icon:before {
@@ -156,15 +156,11 @@ nav {
 }
 
 .highlighted {
-    background-color: #6A8DA9;
+    background-color: rgba(19, 138, 235, 0.3);
 }
 
 .highlighted:hover {
-    background-color: #6A8DA9;
-}
-
-.search-not-found {
-    color: #aaa;
+    background-color: rgba(19, 138, 235, 0.5);
 }
 
 .file-not-found {

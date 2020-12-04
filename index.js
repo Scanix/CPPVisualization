@@ -2,7 +2,7 @@
  * @author Alexandre Bianchi, Loïck Jeanneret
  */
 const { app, BrowserWindow } = require('electron')
-const fileWatcher = require("../backend/file-watcher.js");
+const fileWatcher = require("./backend/file-watcher.js");
 
 let mainWindow;
 
@@ -17,7 +17,7 @@ function createMainWindow() {
         }
     })
 
-    win.loadFile('index.html')
+    win.loadFile('frontend/index.html')
         // win.webContents.openDevTools()
 
     return win

@@ -2,9 +2,9 @@
     "name": "CPPVisualization",
     "version": "1.0.0",
     "description": "Project to visualize dependencies inside a cpp project.",
-    "main": "src/index.js",
+    "main": "index.js",
     "scripts": {
-        "start": "electron ./src",
+        "start": "electron .",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {

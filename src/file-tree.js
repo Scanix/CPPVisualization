@@ -120,14 +120,14 @@ export default class FileTree {
 
             fileNameDiv.addEventListener("click", (event) => {
                 if (!event.ctrlKey) {
-                    this._selectedItems = [];
                     // TODO: Make sure highlighted is not used for something else
-                    document.querySelectorAll(".highlighted").forEach((element) => {
-                        element.classList.remove("highlighted");
-                    });
+                    this._resetSearch();
+                    fileNameDiv.classList.add("highlighted");
+                }
+                else {
+                    fileNameDiv.classList.toggle("highlighted");
                 }
 
-                fileNameDiv.classList.toggle("highlighted");
                 if (fileNameDiv.classList.contains("highlighted")) {
                     this._selectedItems.push(folder.files[fileName]);
                 }

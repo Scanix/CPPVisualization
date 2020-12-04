@@ -1,11 +1,45 @@
 export default class FileTree {
-    constructor(targetElement, searchBar) {
+    constructor(targetElement, searchBar, buttons) {
         this._targetElement = targetElement;
         this._selectedItems = [];
+
+        // Track both tree and as list to make it easier to work with
+        // TODO: Some place should use the list instead of the tree to make code easier to read
         this._fileTree = {};
+        this._fileList = [];
+
+        buttons.resetSearch.addEventListener("click", () => {
+            this._resetSelection();
+        });
+        buttons.headers.addEventListener("click", () => {
+            this._selectType("header");
+        });
+        buttons.sources.addEventListener("click", () => {
+            this._selectType("source");
+        });
 
         searchBar.addEventListener("keyup", (event) => {
             this._handleSearchBar(searchBar.value, this._fileTree);
+        });
+    }
+
+    _selectType(type) {
+        this._resetSelection();
+
+        for (let i = 0; i < this._fileList.length; i++) {
+            const file = this._fileList[i];
+            console.log(file);
+            if (file.type === type) {
+                file.div.classList.add("highlighted");
+                this._selectedItems.push(file);
+            }
+        }
+    }
+
+    _resetSelection() {
+        this._selectedItems = [];
+        document.querySelectorAll(".highlighted").forEach((element) => {
+            element.classList.remove("highlighted");
         });
     }
 
@@ -121,7 +155,7 @@ export default class FileTree {
             fileNameDiv.addEventListener("click", (event) => {
                 if (!event.ctrlKey) {
                     // TODO: Make sure highlighted is not used for something else
-                    this._resetSearch();
+                    this._resetSelection();
                     fileNameDiv.classList.add("highlighted");
                 }
                 else {
@@ -146,7 +180,7 @@ export default class FileTree {
         const fileTreeRoot = { files: {}, folders: { "Project folder": { files: {}, folders: {} } } };
         const fileTree = fileTreeRoot.folders["Project folder"];
 
-        // const fileTree = fileTreeRoot.folders["Root folder"];
+        this._fileList = [];
 
         for (let i = 0; i < projectStructure.files.length; i++) {
             const file = projectStructure.files[i];
@@ -178,6 +212,7 @@ export default class FileTree {
 
                 // Found last folder, "append" file	
                 currentFolder.files[file.name] = file;
+                this._fileList.push(file);
             }
         }
 

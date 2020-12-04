@@ -16,8 +16,19 @@
     <div class="container-main">
         <div class="container-tree" id="file-tree">
             <div class="file-tree-header">
+                <div>Selection preset</div>
+                <button>All</button>
+                <button>Headers</button>
+                <button>Sources</button>
                 <div>Search</div>
                 <input type="text" id="search-file" placeholder="Search file...">
+                <div>Display</div>
+                <select>
+                    <option>Show only selected</option>
+                    <option>Show only selected and their connections</option>
+                    <option>Highlight selected</option>
+                    <option>Highlight selected and their connections</option>
+                </select>
             </div>
             <div id="file-tree-files"></div>
         </div>

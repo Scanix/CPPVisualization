@@ -22,7 +22,7 @@ nav {
 
 .container-tree {
     position: fixed;
-    width: 200px;
+    width: 400px;
     height: 100%;
     top: 50px;
     left: 0px;
@@ -32,7 +32,7 @@ nav {
 
 .container-grid {
     margin-top: 30px;
-    margin-left: 200px;
+    margin-left: 400px;
     padding: 20px;
 }
 
@@ -74,12 +74,12 @@ nav {
 }
 
 .file-tree-header div {
-    padding: 10px;
+    padding-top: 20px;
+    padding-bottom: 10px;
 }
 
-.file-tree-header input {
-    width: 100%;
-    padding: 5px;
+.file-tree-header {
+    padding-left: 10px;
 }
 
 .item-header {
@@ -146,7 +146,6 @@ nav {
 
 
 .tree-folder-name {
-    font-weight: bold;
     padding-top: 2px;
     cursor: pointer;
 }

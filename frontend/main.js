@@ -1,6 +1,6 @@
 import FileTree from "./file-tree.js";
-import ChordGraph from "./ChordGraph.js";
-import GraphGraph from "./GraphGraph.js";
+import GraphChord from "./graph-chord.js";
+import GraphTree from "./graph-tree.js";
 import ProjectStructureLoader from "./project-structure-loader.js";
 const tempJson = require("../backend/demo-structure.json");
 
@@ -15,8 +15,8 @@ const projectStructureLoader = new ProjectStructureLoader((json) => {
     );
     fileTree.update(json);
 
-    let chord = new ChordGraph('svg.d3-chord', json.files);
-    let graph = new GraphGraph();
+    let chord = new GraphChord('svg.d3-chord', json.files);
+    let graph = new GraphTree();
 
     chord.createGraph();
     graph.createGraph('svg.d3-graph', json.files);
@@ -32,8 +32,8 @@ const projectStructureLoader = new ProjectStructureLoader((json) => {
         document.querySelector('svg.d3-chord').innerHTML = "";
         document.querySelector('svg.d3-graph').innerHTML = "";
 
-        chord = new ChordGraph('svg.d3-chord', files);
-        graph = new GraphGraph();
+        chord = new GraphChord('svg.d3-chord', files);
+        graph = new GraphTree();
 
         chord.createGraph();
         graph.createGraph('svg.d3-graph', files);

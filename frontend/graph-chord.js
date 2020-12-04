@@ -6,6 +6,8 @@ export default class ChordGraph {
 
     constructor(svgClass, filesData) {
         this.svgClass = svgClass
+
+        // Convert our data to something d3 can understand (this depends on the graph used)
         this.data = Array.from(d3.rollup(filesData
                 .flatMap(({
                     id: source,
@@ -27,6 +29,8 @@ export default class ChordGraph {
         this.innerRadius = Math.min(this.width, this.height) * 0.5 - 90
         this.outerRadius = this.innerRadius + 10
         this.color = d3.scaleOrdinal(this.names, d3.quantize(d3.interpolateRainbow, this.names.length))
+
+        // Setup graph
         this.ribbon = d3.ribbonArrow()
             .radius(this.innerRadius - 1)
             .padAngle(1 / this.innerRadius)
@@ -46,15 +50,6 @@ export default class ChordGraph {
         }
 
         this.chords = this.chord(this.matrix())
-    }
-
-    overedArc(event, d) {
-        d3.select(this).attr("fill", "red");
-        d3.selectAll(this.chords)
-    }
-
-    outedArc(event, d) {
-
     }
 
     fade(svgClass, opacity) {

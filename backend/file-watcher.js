@@ -1,5 +1,6 @@
-const { ipcMain, remote, dialog, BrowserWindow } = require("electron");
-const tempJson = require("./demo-structure.json");
+const { ipcMain, dialog, BrowserWindow } = require("electron");
+const projectParser = require("./project-parser.js");
+const chokidar = require("chokidar");
 
 module.exports.addEvents = function () {
     ipcMain.on("open-project-picker", (event, arg) => {
@@ -7,7 +8,7 @@ module.exports.addEvents = function () {
             properties: ["openDirectory"]
         }).then((files) => {
             if (files !== undefined) {
-                watchProject(files);
+                watchProject(files.filePaths[0]);
             }
         });
     })
@@ -18,12 +19,20 @@ module.exports.addEvents = function () {
  * @param {string} path 
  */
 function watchProject(path) {
-    // TODO: This should watch and parse project, for now it just sends dummy data
-    sendProjectStructure(tempJson);
+    // Parse and send project the first time
+    parseAndSendProject(path);
 
-    setInterval(() => {
-        sendProjectStructure(tempJson);
-    }, 5000);
+    // Watch for any changes in the directory
+    chokidar.watch(path, { ignoreInitial: true }).on("all", (_event, changedPath) => {
+        // TODO: In the future if we have more time, when a folder change only parse the project once and group changed files
+        parseAndSendProject(path, changedPath);
+    });
+}
+
+function parseAndSendProject(path, changedPath) {
+    projectParser.parseProject(path, changedPath).then((projectStructure) => {
+        sendProjectStructure(projectStructure);
+    });
 }
 
 /**
@@ -31,5 +40,5 @@ function watchProject(path) {
  * @param {object} obj 
  */
 function sendProjectStructure(obj) {
-    BrowserWindow.getFocusedWindow().webContents.send("project-structure-updated", JSON.stringify(obj));
+    BrowserWindow.getAllWindows()[0].webContents.send("project-structure-updated", JSON.stringify(obj));
 }

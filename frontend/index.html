@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CPPVisualization</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <nav>
+        <p>CPPVisualization
+        </p>
+    </nav>
+    <div class="container-main">
+        <div class="container-tree" id="file-tree">
+            <div class="file-tree-header">
+                <div>Selection preset</div>
+                <button id="preset-all">All</button>
+                <button id="preset-headers">Headers</button>
+                <button id="preset-sources">Sources</button>
+                <div>Search</div>
+                <input type="text" id="search-file" placeholder="Search file...">
+                <div>Display</div>
+                <select>
+                    <option>Show only selected</option>
+                    <option>Show only selected and their connections</option>
+                    <option>Highlight selected</option>
+                    <option>Highlight selected and their connections</option>
+                </select>
+            </div>
+            <div id="file-tree-files"></div>
+        </div>
+        <div class="container-grid">
+            <h2>Statistiques du projet</h2>
+            <div class="grid">
+                <div class="grid-sizer"></div>
+                <div class="gutter-sizer"></div>
+
+                <div id="graphs-container" class="grid-item grid-item--width3">
+                    <div class="graph-display" data-graph-name="Graph coord">
+                        <svg class="d3-chord" overflow="auto"></svg>
+                    </div>
+                    <div class="graph-display" data-graph-name="Graph tree">
+                        <svg class="d3-tree" overflow="auto"></svg>
+                    </div>
+                    <div class="graph-display" data-graph-name="Line count">
+                        <svg class="d3-code" overflow="auto"></svg>
+                    </div>
+                    <div class="graph-display" data-graph-name="About">
+                        <h1>About</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="./main.js"></script>
+    <script type="module" src="./project-structure-loader.js"></script>
+    <script>
+        const Masonry = require('masonry-layout')
+
+        // Load masonry
+        let grid = document.querySelector('.grid');
+        let msnry = new Masonry(grid, {
+            itemSelector: '.grid-item',
+            columnWidth: '.grid-sizer',
+            percentPosition: true,
+            horizontalOrder: true,
+            gutter: '.gutter-sizer',
+        });
+    </script>
+</body>
+
+</html>

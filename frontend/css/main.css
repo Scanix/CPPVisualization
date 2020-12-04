@@ -1,0 +1,179 @@
+html,
+body {
+    padding: 0px;
+    margin: 0px;
+    font-family: sans-serif;
+}
+
+nav {
+    width: 100%;
+    height: 50px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: darkgrey;
+    z-index: 10;
+    padding: 0px 10px;
+}
+
+.container-main {
+    /* just to remember the existence of this thing */
+}
+
+.container-tree {
+    position: fixed;
+    width: 400px;
+    height: 100%;
+    top: 50px;
+    left: 0px;
+    overflow: auto;
+    border-right: 1px solid black;
+}
+
+.container-grid {
+    margin-top: 30px;
+    margin-left: 400px;
+    padding: 20px;
+}
+
+.grid-item {
+    margin-top: 20px;
+    height: 800px;
+    box-sizing: border-box;
+    border: black 1px solid;
+}
+
+.grid-sizer,
+.grid-item {
+    width: 23%;
+}
+
+.gutter-sizer {
+    width: 2%;
+}
+
+.grid-item--width2 {
+    width: 48%;
+}
+
+.grid-item--width3 {
+    width: 73%;
+}
+
+.grid-item svg {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.file-tree-header {
+    border-bottom: 1px solid black;
+    font-weight: bold;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.file-tree-header div {
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.file-tree-header {
+    padding-left: 10px;
+}
+
+.item-header {
+    position: absolute;
+    width: 100%;
+    padding: 5px 10px;
+    background-color: darkslategray;
+    color: white;
+    box-sizing: border-box;
+}
+
+.item-header>p {
+    margin: 0px;
+}
+
+#file-tree-files {
+    padding-left: 10px;
+    /* TODO: Only disable double-click select */
+    user-select: none;
+}
+
+.tree-folder {
+    margin-bottom: 5px;
+    padding-left: 10px;
+    margin-left: 10px;
+    border-left: 1px dashed gray;
+}
+
+.tree-folder-item:hover,
+.tree-folder-name:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.has-icon:before {
+    content: "";
+    background-repeat: no-repeat;
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 5px;
+    vertical-align: -0.2em;
+    display: inline-block;
+}
+
+.collapsed {
+    display: none;
+}
+
+.icon-folder-open:before {
+    background: url("../../icons/folder-open.svg");
+}
+
+.icon-folder-closed:before {
+    background: url("../../icons/folder-closed.svg");
+}
+
+.icon-header:before {
+    background: url("../../icons/header-file.svg");
+}
+
+.icon-source:before {
+    background: url("../../icons/cpp-file.svg");
+}
+
+.icon-file:before {
+    background: url("../../icons/file.svg");
+}
+
+.tree-folder-name {
+    padding-top: 2px;
+    cursor: pointer;
+}
+
+.tree-folder-item {
+    padding-top: 2px;
+    cursor: pointer;
+}
+
+.highlighted {
+    background-color: rgba(19, 138, 235, 0.3);
+}
+
+.tree-folder-item:hover,
+.tree-folder-name:hover {
+    background-color: rgba(19, 138, 235, 0.3);
+}
+
+.highlighted:hover {
+    background-color: rgba(19, 138, 235, 0.5);
+}
+
+.file-not-found {
+    display: none;
+}
+
+.hidden {
+    display: none;
+}

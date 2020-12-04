@@ -12,7 +12,7 @@
             "stats": {
                 "lineCount": 7
             },
-            "filename": "chicken.h",
+            "name": "chicken.h",
             "includes": [],
             "calls": []
         },
@@ -26,7 +26,7 @@
             "stats": {
                 "lineCount": 18
             },
-            "filename": "cow.h",
+            "name": "cow.h",
             "includes": [
                 "includes/entities/entity.h"
             ],
@@ -42,7 +42,7 @@
             "stats": {
                 "lineCount": 15
             },
-            "filename": "entity.h",
+            "name": "entity.h",
             "includes": [
                 "iostream",
                 "includes/position.h"
@@ -59,7 +59,7 @@
             "stats": {
                 "lineCount": 16
             },
-            "filename": "pig.h",
+            "name": "pig.h",
             "includes": [
                 "includes/entities/entity.h",
                 "includes/bucket.h"
@@ -75,7 +75,7 @@
             "stats": {
                 "lineCount": 16
             },
-            "filename": "bucket.h",
+            "name": "bucket.h",
             "includes": [
                 "iostream",
                 "includes/entities/pig.h"
@@ -91,7 +91,7 @@
             "stats": {
                 "lineCount": 4
             },
-            "filename": "position.h",
+            "name": "position.h",
             "includes": [],
             "calls": []
         },
@@ -104,7 +104,7 @@
             "stats": {
                 "lineCount": 19
             },
-            "filename": "bucket.cpp",
+            "name": "bucket.cpp",
             "includes": [
                 "includes/bucket.h"
             ],
@@ -119,7 +119,7 @@
             "stats": {
                 "lineCount": 1
             },
-            "filename": "chicken.cpp",
+            "name": "chicken.cpp",
             "includes": [],
             "calls": []
         },
@@ -132,7 +132,7 @@
             "stats": {
                 "lineCount": 24
             },
-            "filename": "cow.cpp",
+            "name": "cow.cpp",
             "includes": [
                 "includes/entities/cow.h",
                 "includes/bucket.h"
@@ -157,7 +157,7 @@
             "stats": {
                 "lineCount": 19
             },
-            "filename": "pig.cpp",
+            "name": "pig.cpp",
             "includes": [
                 "includes/entities/pig.h"
             ],
@@ -179,7 +179,7 @@
             "stats": {
                 "lineCount": 25
             },
-            "filename": "main.cpp",
+            "name": "main.cpp",
             "includes": [
                 "iostream",
                 "includes/bucket.h",
@@ -218,7 +218,7 @@
             "stats": {
                 "lineCount": 25
             },
-            "filename": "README.md",
+            "name": "README.md",
             "includes": [],
             "calls": []
         }

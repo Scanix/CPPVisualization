@@ -1,13 +1,28 @@
 import FileTree from "./file-tree.js";
 import ChordGraph from "./ChordGraph.js";
 import GraphGraph from "./GraphGraph.js";
+import ProjectStructureLoader from "./project-structure-loader.js";
 const tempJson = require("../backend/demo-structure.json");
 
-const fileTree = new FileTree(document.getElementById("file-tree-files"));
-fileTree.update(tempJson);
+const projectStructureLoader = new ProjectStructureLoader((json) => {
+    const fileTree = new FileTree(
+        document.getElementById("file-tree-files"),
+        document.getElementById("search-file"),
+        {
+            resetSearch: document.getElementById("preset-all"),
+            headers: document.getElementById("preset-headers"),
+            sources: document.getElementById("preset-sources"),
+        }
+    );
+    fileTree.update(json);
 
-let chord = new ChordGraph('svg.d3-chord', tempJson.files);
-let graph = new GraphGraph();
+    let chord = new ChordGraph('svg.d3-chord', json.files);
+    let graph = new GraphGraph();
 
-chord.createGraph();
-graph.createGraph('svg.d3-graph', tempJson.files);
+    chord.createGraph();
+    graph.createGraph('svg.d3-graph', json.files);
+});
+
+// Open folder query as soon as app start
+projectStructureLoader.pickFile();
+

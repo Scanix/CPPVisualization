@@ -22,7 +22,7 @@ nav {
 
 .container-tree {
     position: fixed;
-    width: 200px;
+    width: 400px;
     height: 100%;
     top: 50px;
     left: 0px;
@@ -32,7 +32,7 @@ nav {
 
 .container-grid {
     margin-top: 30px;
-    margin-left: 200px;
+    margin-left: 400px;
     padding: 20px;
 }
 
@@ -74,12 +74,12 @@ nav {
 }
 
 .file-tree-header div {
-    padding: 10px;
+    padding-top: 20px;
+    padding-bottom: 10px;
 }
 
-.file-tree-header input {
-    width: 100%;
-    padding: 5px;
+.file-tree-header {
+    padding-left: 10px;
 }
 
 .item-header {
@@ -97,6 +97,8 @@ nav {
 
 #file-tree-files {
     padding-left: 10px;
+    /* TODO: Only disable double-click select */
+    user-select: none;
 }
 
 .tree-folder {
@@ -146,7 +148,6 @@ nav {
 }
 
 .tree-folder-name {
-    font-weight: bold;
     padding-top: 2px;
     cursor: pointer;
 }
@@ -157,9 +158,18 @@ nav {
 }
 
 .highlighted {
-    background-color: #6A8DA9;
+    background-color: rgba(19, 138, 235, 0.3);
+}
+
+.tree-folder-item:hover,
+.tree-folder-name:hover {
+    background-color: rgba(19, 138, 235, 0.3);
 }
 
 .highlighted:hover {
-    background-color: #6A8DA9;
+    background-color: rgba(19, 138, 235, 0.5);
+}
+
+.file-not-found {
+    display: none;
 }

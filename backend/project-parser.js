@@ -37,7 +37,7 @@ function parseProject(projectPath, changedPath) {
                     type,
                     path: folderPath,
                     stats,
-                    fileName,
+                    name: fileName,
                     calls
                 });
             }

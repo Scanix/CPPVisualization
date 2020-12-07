@@ -88,7 +88,7 @@ function parseFile(fileContent, files) {
 
 function parseIncludes(fileContent, files) {
     // Very rough line parsing, could be improved by doing actual parsing and using a syntax tree but it would take a lot of time
-    const includeRegex = /#include\s[<"](.+)[>"]/gm;
+    const includeRegex = /^\s*#\s*include\s*[<"](.+)[>"]\s*/gm;
     const matches = fileContent.matchAll(includeRegex);
     const includes = [];
 

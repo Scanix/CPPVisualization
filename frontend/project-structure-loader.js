@@ -18,6 +18,10 @@ export default class ProjectStructureLoader {
     pickFile() {
         ipcRenderer.send("open-project-picker");
     }
+    
+    openDirectory(path) {
+        ipcRenderer.send("set-project-directory", path);
+    }
 
 }
 

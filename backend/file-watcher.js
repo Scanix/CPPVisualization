@@ -3,6 +3,10 @@ const projectParser = require("./project-parser.js");
 const chokidar = require("chokidar");
 
 module.exports.addEvents = function () {
+    ipcMain.on("set-project-directory", (evt, arg) => {
+        watchProject(arg);
+    });
+
     ipcMain.on("open-project-picker", (event, arg) => {
         dialog.showOpenDialog({
             properties: ["openDirectory"]

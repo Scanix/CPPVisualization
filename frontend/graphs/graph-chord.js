@@ -1,26 +1,52 @@
 const d3 = require("d3")
+import Graph from "./graph.js"
 
-export default class ChordGraph {
-    width = 500;
-    height = 500;
+export default class ChordGraph extends Graph {
+    fade(svgClass, opacity) {
+        return function (g, i) {
+            let sources = [];
+            // TODO: Convert index to file and use file.highlightsForGraph.includes(hoveredFile) to determine if it should be highlighted or not
+            d3.select(svgClass).selectAll('.chord path')
+                .filter(function (d) {
+                    let result = d.source.index != i.index && d.target.index != i.index;
+                    if (!result) {
+                        sources.push(d.source.index);
+                        sources.push(d.target.index);
+                    }
+                    return result;
+                })
+                .transition()
+                .style("opacity", opacity);
 
-    constructor(svgClass, filesData) {
-        this.svgClass = svgClass
+            d3.select(svgClass).selectAll('.group path')
+                .filter(function (d) { return d.index != i.index && !sources.includes(d.index) })
+                .select(function () { return this.parentNode; })
+                .transition()
+                .style("opacity", opacity);
+        };
+    }
+
+    getFilename(path) {
+        let arr = path.split('/');
+        return arr[arr.length - 1];
+    }
+
+    createOrUpdateGraph({ selectedFiles, projectStructure, hoveredAction }) {
 
         // Convert our data to something d3 can understand (this depends on the graph used)
-        this.data = Array.from(d3.rollup(filesData
-                .flatMap(({
-                    id: source,
-                    includes
-                }) => includes.map(target => [source, target])),
-                ({
-                    0: [source, target],
-                    length: value
-                }) => ({
-                    source,
-                    target,
-                    value
-                }), link => link.join())
+        this.data = Array.from(d3.rollup(selectedFiles
+            .flatMap(({
+                id: source,
+                includesForGraph
+            }) => includesForGraph.map(target => [source, target])),
+            ({
+                0: [source, target],
+                length: value
+            }) => ({
+                source,
+                target,
+                value
+            }), link => link.join())
             .values());
 
         let sorter = require('path-sort').standalone('/');
@@ -50,49 +76,18 @@ export default class ChordGraph {
         }
 
         this.chords = this.chord(this.matrix())
-    }
-
-    fade(svgClass, opacity) {
-        return function(g, i) {
-            let sources = [];
-
-            d3.select(svgClass).selectAll('.chord path')
-                .filter(function(d) {
-                    let result = d.source.index != i.index && d.target.index != i.index;
-                    if (!result) {
-                        sources.push(d.source.index);
-                        sources.push(d.target.index);
-                    }
-                    return result;
-                })
-                .transition()
-                .style("opacity", opacity);
-
-            d3.select(svgClass).selectAll('.group path')
-                .filter(function(d) { return d.index != i.index && !sources.includes(d.index) })
-                .select(function() { return this.parentNode; })
-                .transition()
-                .style("opacity", opacity);
-        };
-    }
-
-    getFilename(path) {
-        let arr = path.split('/');
-        return arr[arr.length - 1];
-    }
-
-    createGraph() {
-
-        let svg = d3.select(this.svgClass)
+        // -----------------------
+        /*let svg = d3.select(this._svgClass)
+            .attr("viewBox", [-this.width / 2, -this.height / 2, this.width, this.height])*/
+        d3.select(this._svgClass)
             .attr("viewBox", [-this.width / 2, -this.height / 2, this.width, this.height])
-
-        let zoomPart = svg.append("g")
+        let zoomPart = this._svg.append("g")
 
         const zoom = d3.zoom().on("zoom", e => {
             zoomPart.attr("transform", (e.transform));
         })
 
-        d3.select(this.svgClass)
+        d3.select(this._svgClass)
             .call(zoom)
 
         const group = zoomPart.append("g")
@@ -102,8 +97,8 @@ export default class ChordGraph {
             .selectAll("g")
             .data(this.chords.groups)
             .join("g")
-            .on("mouseover", this.fade(this.svgClass, .1))
-            .on("mouseout", this.fade(this.svgClass, 1));
+            .on("mouseover", this.fade(this._svgClass, .1))
+            .on("mouseout", this.fade(this._svgClass, 1));
 
         group.append("path")
             .attr("fill", d => this.color(this.names[d.index]))

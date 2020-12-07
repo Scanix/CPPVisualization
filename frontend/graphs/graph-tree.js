@@ -1,44 +1,15 @@
 const d3 = require("d3")
+import Graph from "./graph.js"
 
-export default class GraphTree {
-    width = 300
-    height = 300
-
-    constructor() { }
-
-    _getColorFromType(type) {
-        const colors = {
-            "source": "white",
-            "header": "white",
-        };
-
-        return colors[type] || "#000000";
-    }
-
-    _getBackgroundColorFromType(type) {
-        const colors = {
-            "header": "#4080CE",
-            "source": "#EE6020",
-        };
-
-        return colors[type] || "#AAAAAA";
-    }
-
-    _getRectangleWidth(d) {
-        return d.name.length * 9;
-    }
-
-
+export default class GraphTree extends Graph {
     _fade(svgClass, opacity) {
         return (event, d) => {
-            const includes = this._buildIncludes(d.file, false);
-            includes.push(d.id);
-
+            const hoveredFile = d.file;
             d3.select(svgClass)
                 .selectAll('g')
                 .filter((d) => {
                     if (d && d.id) {
-                        return !includes.includes(d.id);
+                        return !hoveredFile.highlightsForGraph.includes(d.id);
                     }
                     else {
                         return false;
@@ -50,7 +21,7 @@ export default class GraphTree {
                 .selectAll('line')
                 .filter((d) => {
                     if (d && d.source && d.target) {
-                        return !includes.includes(d.source.id) || !includes.includes(d.target.id);
+                        return !hoveredFile.highlightsForGraph.includes(d.source.id) || !hoveredFile.highlightsForGraph.includes(d.target.id);
                     }
                     else {
                         return false;
@@ -60,40 +31,16 @@ export default class GraphTree {
         };
     }
 
-    _buildIncludes(file, recursive = true) {
-        // Add all file includes
-        let includes = [];
 
-        if (recursive) {
-            // Find includes of parents
-            for (let i = 0; i < file.includes.length; i++) {
-                const includedId = file.includes[i];
-                includes.push(includedId);
-
-                for (let j = 0; j < this._jsonData.length; j++) {
-                    const fileData = this._jsonData[j];
-                    if (fileData.id === includedId) {
-                        includes = includes.concat(this._buildIncludes(fileData, true));
-                    }
-                }
-            }
-        }
-        else {
-            includes = file.includes;
-        }
-
-        return includes;
-    }
-
-    createGraph(svgClass, filteredFilesData, jsonData) {
+    createOrUpdateGraph({ selectedFiles, projectStructure, hoveredAction, hoveredLinkDirection }) {
         const nodes = [];
         const links = [];
         const fileIds = [];
 
-        this._jsonData = jsonData;
+        this._jsonData = projectStructure;
 
         // Build nodes and links
-        filteredFilesData.forEach((fileData) => {
+        selectedFiles.forEach((fileData) => {
             nodes.push({
                 id: fileData.id,
                 name: fileData.name,
@@ -102,7 +49,7 @@ export default class GraphTree {
 
             fileIds.push(fileData.id);
 
-            fileData.includes.forEach((includeId) => {
+            fileData.includesForGraph.forEach((includeId) => {
                 links.push({
                     source: includeId,
                     target: fileData.id
@@ -127,8 +74,7 @@ export default class GraphTree {
             }
         });
 
-        const svg = d3.select(svgClass).attr("viewBox", [0, 0, this.width, this.height]);
-        const zoomArea = svg.append("g");
+        const zoomArea = this._svg.append("g");
 
         // https://observablehq.com/@harrylove/draw-an-arrowhead-marker-connected-to-a-line-in-d3
         const arrowSize = 10;
@@ -139,7 +85,7 @@ export default class GraphTree {
 
         const arrowPoints = [[0, 0], [0, arrowSize], [arrowSize, arrowSize / 2]];
 
-        svg
+        this._svg
             .append('defs')
             .append('marker')
             .attr('id', 'arrow')
@@ -157,7 +103,7 @@ export default class GraphTree {
             zoomArea.attr("transform", (e.transform));
         })
 
-        d3.select(svgClass).call(zoom);
+        d3.select(this._svgClass).call(zoom);
 
         // Initialize the links
         const link = zoomArea.append("g")
@@ -179,8 +125,8 @@ export default class GraphTree {
             .attr("fill", (d) => this._getBackgroundColorFromType(d.file.type))
             .attr("r", 10)
             .attr("cx", 5)
-            .on("mouseover", this._fade(svgClass, .1))
-            .on("mouseout", this._fade(svgClass, 1))
+            .on("mouseover", this._fade(this._svgClass, .1))
+            .on("mouseout", this._fade(this._svgClass, 1))
             .attr("cy", 5)
             .on("click", (event, d) => {
                 console.log(d);
@@ -199,7 +145,7 @@ export default class GraphTree {
                 .links(links)
             )
             .force("charge", d3.forceManyBody().strength(-1000))
-            .force("yPosition", d3.forceY((d) => { return { source: 200, header: -200, external: -400 }[d.file.type] || 0 }))
+            .force("yPosition", d3.forceY((d) => { return { source: 200, header: -200, external: -400 }[d.file.type] || 0 })) // TODO: Count number of children total?
             .force("xPosition", d3.forceX((d) => { return { external: -100 }[d.file.type] || 0 }))
             //   .force("xPosition", d3.forceY((d) => 100))
             .force("center", d3.forceCenter(this.width / 2, this.height / 2))

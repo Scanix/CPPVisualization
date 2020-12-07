@@ -7,7 +7,8 @@ function parseProject(projectPath, changedPath) {
     const jsonOutput = {
         meta: {},
         filesChanged: [],
-        files: []
+        files: [],
+        externalIds: []
     };
 
     return new Promise((resolve, reject) => {
@@ -49,7 +50,11 @@ function parseProject(projectPath, changedPath) {
 
                 jsonFile.stats.lineCount = parsedFile.stats.lineCount;
                 jsonFile.includes = parsedFile.includes;
+                jsonFile.externalIncludes = parsedFile.externals;
+                jsonOutput.externalIds = jsonOutput.externalIds.concat(parsedFile.externals);
             }
+
+            jsonOutput.externalIds = [... new Set(jsonOutput.externalIds)];
 
             resolve(jsonOutput);
         });
@@ -72,7 +77,7 @@ function getFileType(fileName) {
 
 function parseFile(fileContent, files) {
     const lines = fileContent.replace(/\r/g, "").split("\n");
-    const includes = parseIncludes(fileContent, files);
+    const { includes, externals } = parseIncludes(fileContent, files);
 
     // Function parsing requires more than regex as we can't count parenthesis, this could be done in a better way someday
     // The following regex could be used to identify function position and then use basic state machine to find matching parenthesis
@@ -82,7 +87,8 @@ function parseFile(fileContent, files) {
         stats: {
             lineCount: lines.length
         },
-        includes
+        includes,
+        externals
     };
 }
 
@@ -91,6 +97,7 @@ function parseIncludes(fileContent, files) {
     const includeRegex = /^\s*#\s*include\s*[<"](.+)[>"]\s*/gm;
     const matches = fileContent.matchAll(includeRegex);
     const includes = [];
+    const externals = [];
 
     for (const match of matches) {
         let matchFound = false;
@@ -108,10 +115,11 @@ function parseIncludes(fileContent, files) {
             // External library / cannot find match
             // TODO: Add a flag to tell that the library is not set?
             includes.push(match[1]);
+            externals.push(match[1]);
         }
     }
 
-    return includes;
+    return { includes, externals };
 }
 
 module.exports.parseProject = parseProject;

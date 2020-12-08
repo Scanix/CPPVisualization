@@ -329,7 +329,7 @@ function loadProject() {
     });
 
     // Open folder query as soon as app start
-    // projectStructureLoader.pickFile();
+    projectStructureLoader.pickFile();
     // Comment the line above and uncomment the line below to instantly open project on start
-    projectStructureLoader.openDirectory("demo-cpp-project");
+    // projectStructureLoader.openDirectory("demo-cpp-project");
 }

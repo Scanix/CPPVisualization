@@ -65,8 +65,14 @@ function buildFileTree(projectStructure) {
             resetSearch: document.getElementById("preset-all"),
             headers: document.getElementById("preset-headers"),
             sources: document.getElementById("preset-sources"),
-        }
-    );
+        },
+        [
+            document.getElementById("display-option"),
+            document.getElementById("include-option"),
+            document.getElementById("dependency-direction-option"),
+            document.getElementById("highlight-option"),
+            document.getElementById("show-external")
+        ]);
 
     fileTree.update(projectStructure);
     return fileTree;

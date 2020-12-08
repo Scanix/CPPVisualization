@@ -1,5 +1,5 @@
 export default class FileTree {
-    constructor(targetElement, searchBar, buttons) {
+    constructor(targetElement, searchBar, buttons, selects) {
         this._targetElement = targetElement;
         this._selectedItems = [];
 
@@ -20,6 +20,13 @@ export default class FileTree {
             this._selectType("source");
             dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems } }))
         });
+
+        for (let i = 0; i < selects.length; i++) {
+            const select = selects[i];
+            select.addEventListener("change", () => {
+                dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems } }))
+            });
+        }
 
         searchBar.addEventListener("keyup", (event) => {
             this._handleSearchBar(searchBar.value, this._fileTree);

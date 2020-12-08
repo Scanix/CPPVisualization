@@ -128,9 +128,15 @@ export default class GraphTree extends Graph {
             .on("mouseover", this._fade(this._svgClass, .1))
             .on("mouseout", this._fade(this._svgClass, 1))
             .attr("cy", 5)
-            .on("click", (event, d) => {
-                console.log(d);
-            });
+            .call(d3.drag().container(zoomArea).on("start", (e) => {
+                // if (!e.active) simulation.alphaTarget(0.1).restart();
+            }).on("drag", (e, d) => {
+                d.fx = e.x;
+                d.fy = e.y;
+                simulation.restart();
+            }).on("end", (e, d) => {
+                // if (!e.active) simulation.alphaTarget(0.0);
+            }))
 
         node.append("text")
             .attr("fill", "black")

@@ -97,7 +97,7 @@ export default class GraphTree extends Graph {
             .attr('orient', 'auto-start-reverse')
             .append('path')
             .attr('d', d3.line()(arrowPoints))
-            .attr('fill', '#999');
+            .attr('fill', '#555');
 
         const zoom = d3.zoom().on("zoom", e => {
             zoomArea.attr("transform", (e.transform));
@@ -150,10 +150,10 @@ export default class GraphTree extends Graph {
                 .id(d => d.id)
                 .links(links)
             )
-            .force("charge", d3.forceManyBody().strength(-1000))
-            .force("yPosition", d3.forceY((d) => { return { source: 200, header: -200, external: -400 }[d.file.type] || 0 })) // TODO: Count number of children total?
-            .force("xPosition", d3.forceX((d) => { return { external: -100 }[d.file.type] || 0 }))
-            //   .force("xPosition", d3.forceY((d) => 100))
+            .force("charge", d3.forceManyBody().strength((d) => {
+                return Math.min(-500, d.file.name.length * -70);
+            }))
+            .force("yPosition", d3.forceY((d) => { return { source: 300, header: -300, external: -300 }[d.file.type] || 0 }))
             .force("center", d3.forceCenter(this.width / 2, this.height / 2))
 
         simulation.on("tick", () => {

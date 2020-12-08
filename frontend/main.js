@@ -255,15 +255,27 @@ function getGraphParams(selectedFiles, projectStructure) {
     };
 }
 
-function buildParentHighlight(file, allFiles) {
+function buildParentHighlight(file, allFiles, exploredFiles = []) {
+    if (exploredFiles.includes(file.id)) {
+        return file.highlightsForGraph;
+    }
+
+    exploredFiles.push(file.id);
+
+    // For each file included by the file
     for (let i = 0; i < file.includesForGraph.length; i++) {
         const includeId = file.includesForGraph[i];
+
+        // Find the included file
         for (let j = 0; j < allFiles.length; j++) {
             const fileToHighlight = allFiles[j];
             if (fileToHighlight.id === includeId) {
-                file.highlightsForGraph.push(fileToHighlight.id);
+                // Selected file exists, we add it to the list of files
+                if (!file.highlightsForGraph.includes(fileToHighlight.id)) {
+                    file.highlightsForGraph.push(fileToHighlight.id);
+                }
 
-                const parentHighlights = buildParentHighlight(fileToHighlight, allFiles);
+                const parentHighlights = buildParentHighlight(fileToHighlight, allFiles, exploredFiles);
                 for (let j = 0; j < parentHighlights.length; j++) {
                     if (!file.highlightsForGraph.includes(parentHighlights[j])) {
                         file.highlightsForGraph.push(parentHighlights[j]);
@@ -274,7 +286,9 @@ function buildParentHighlight(file, allFiles) {
     }
 
     // We also highlight the hovered file
-    file.highlightsForGraph.push(file.id);
+    if (!file.highlightsForGraph.includes(file.id)) {
+        file.highlightsForGraph.push(file.id);
+    }
 
     return file.highlightsForGraph;
 }

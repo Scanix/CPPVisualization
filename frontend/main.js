@@ -330,7 +330,7 @@ function loadProject() {
         // When file tree is updated, rebuild graph
         addEventListener("treeSelectionEvent", (e) => {
             let selectedFiles = [];
-            if (e.detail) {
+            if (e.detail && e.detail.files.length > 0) {
                 selectedFiles = e.detail.files;
             } else {
                 selectedFiles = projectStructure.files;

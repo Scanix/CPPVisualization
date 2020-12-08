@@ -20,16 +20,42 @@
                 <button id="preset-all">All</button>
                 <button id="preset-headers">Headers</button>
                 <button id="preset-sources">Sources</button>
-                <div>Search</div>
-                <input type="text" id="search-file" placeholder="Search file...">
+
                 <div>Display</div>
-                <select>
-                    <option>Show only selected</option>
-                    <option>Show only selected and their connections</option>
-                    <option>Highlight selected</option>
-                    <option>Highlight selected and their connections</option>
+                <label>Selected files: </label>
+                <select id="display-option">
+                    <option value="hide-others">Show only selected files</option>
+                    <option value="highlight-selected">Highlight selected files</option>
                 </select>
+                <br><br>
+
+                <label>Dependencies: </label>
+                <select id="include-option">
+                    <option value="recursively-included">Show #included files recursively</option>
+                    <option value="directly-included">Show directly #included files</option>
+                    <option value="hide-included">Hide #included files</option>
+                </select>
+                <br>
+                <label>Direction: </label>
+                <select id="dependency-direction-option">
+                    <option value="includes">Parents</option>
+                    <option value="included-by">Children</option>
+                    <option value="both-direction">Parents and children</option>
+                </select>
+
+                <br><br>
+                <label>Mouse hover settings: </label>
+                <select id="highlight-option">
+                    <option value="includes">Highlight includes</option>
+                    <option value="included-by">Highlight files including the file</option>
+                    <option value="both-direction">Highlight all related files</option>
+                </select>
+                <br><br>
+                <label>Show external libraries: </label><input type="checkbox" id="show-external" name="show-external" checked><br>
+                <br>
+
             </div>
+            <input type="text" id="search-file" placeholder="Search file...">
             <div id="file-tree-files"></div>
         </div>
         <div class="container-grid">

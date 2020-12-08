@@ -301,6 +301,11 @@ function loadProject() {
     const projectStructureLoader = new ProjectStructureLoader((projectStructure) => {
 
         buildFileTree(projectStructure);
+        for (let i = 0; i < graphs.length; i++) {
+            const graph = graphs[i];
+            const graphInstance = new graph.class(graph.selector);
+            graphInstance.createOrUpdateGraph(getGraphParams(projectStructure.files, projectStructure));
+        }
 
         // When file tree is updated, rebuild graph
         addEventListener("treeSelectionEvent", (e) => {

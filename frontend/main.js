@@ -293,14 +293,23 @@ function buildParentHighlight(file, allFiles, exploredFiles = []) {
     return file.highlightsForGraph;
 }
 
-function buildChildrenHighlight(file, allFiles) {
+function buildChildrenHighlight(file, allFiles, exploredFiles = []) {
+    if (exploredFiles.includes(file.id)) {
+        return file.highlightsForGraph;
+    }
+
+    exploredFiles.push(file.id);
+
     for (let i = 0; i < allFiles.length; i++) {
         const childFile = allFiles[i];
         for (let j = 0; j < childFile.includesForGraph.length; j++) {
             const childIncludeId = childFile.includesForGraph[j];
             if (file.id === childIncludeId) {
-                file.highlightsForGraph.push(childIncludeId);
-                const childrenHighlight = buildChildrenHighlight(childFile, allFiles);
+                if (!file.highlightsForGraph.includes(childIncludeId)) {
+                    file.highlightsForGraph.push(childIncludeId);
+                }
+
+                const childrenHighlight = buildChildrenHighlight(childFile, allFiles, exploredFiles);
                 for (let j = 0; j < childrenHighlight.length; j++) {
                     if (!file.highlightsForGraph.includes(childrenHighlight[j])) {
                         file.highlightsForGraph.push(childrenHighlight[j]);

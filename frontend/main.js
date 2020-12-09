@@ -19,12 +19,13 @@ loadProject();
  */
 function addGraphTabs() {
     const graphContainer = document.getElementById("graphs-container");
-    const graphListTarget = document.querySelector("body > nav > p");
+    const graphListTarget = document.querySelector("#graph-btn");
 
     // Add buttons to display graphs
     graphContainer.childNodes.forEach(element => {
         if (element.nodeType !== Node.TEXT_NODE) {
             const button = document.createElement("button");
+            button.classList.add("btn", "btn-sm", "btn-outline-secondary");
             button.textContent = element.dataset.graphName;
             graphListTarget.appendChild(button);
 
@@ -60,13 +61,11 @@ function buildFileTree(projectStructure) {
     // Build file tree on the left
     const fileTree = new FileTree(
         document.getElementById("file-tree-files"),
-        document.getElementById("search-file"),
-        {
+        document.getElementById("search-file"), {
             resetSearch: document.getElementById("preset-all"),
             headers: document.getElementById("preset-headers"),
             sources: document.getElementById("preset-sources"),
-        },
-        [
+        }, [
             document.getElementById("display-option"),
             document.getElementById("include-option"),
             document.getElementById("dependency-direction-option"),

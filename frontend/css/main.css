@@ -5,65 +5,107 @@ body {
     font-family: sans-serif;
 }
 
-nav {
-    width: 100%;
-    height: 50px;
+body {
+    font-size: .875rem;
+}
+
+.feather {
+    width: 16px;
+    height: 16px;
+    vertical-align: text-bottom;
+}
+
+
+/*
+   * Sidebar
+   */
+
+.sidebar {
     position: fixed;
     top: 0;
+    /* rtl:raw:
+    right: 0;
+    */
+    bottom: 0;
+    /* rtl:remove */
     left: 0;
-    background-color: darkgrey;
-    z-index: 10;
-    padding: 0px 10px;
+    z-index: 100;
+    /* Behind the navbar */
+    padding-top: 48px;
+    /* Height of navbar */
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
-.container-main {
-    /* just to remember the existence of this thing */
+@media (max-width: 767.98px) {
+    .sidebar {
+        top: 5rem;
+    }
 }
 
-.container-tree {
-    position: fixed;
-    width: 400px;
-    height: 100%;
-    top: 50px;
-    left: 0px;
-    overflow: auto;
-    border-right: 1px solid black;
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 48px);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    /* Scrollable contents if viewport is shorter than content. */
 }
 
-.container-grid {
-    margin-top: 30px;
-    margin-left: 400px;
-    padding: 20px;
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
 }
 
-.grid-item {
-    margin-top: 20px;
-    height: 800px;
-    box-sizing: border-box;
-    border: black 1px solid;
+.sidebar .nav-link .feather {
+    margin-right: 4px;
+    color: #727272;
 }
 
-.grid-sizer,
-.grid-item {
-    width: 23%;
+.sidebar .nav-link.active {
+    color: #007bff;
 }
 
-.gutter-sizer {
-    width: 2%;
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+    color: inherit;
 }
 
-.grid-item--width2 {
-    width: 48%;
+.sidebar-heading {
+    font-size: .75rem;
+    text-transform: uppercase;
 }
 
-.grid-item--width3 {
-    width: 73%;
+
+/*
+   * Navbar
+   */
+
+.navbar-brand {
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+    font-size: 1rem;
 }
 
-.grid-item svg {
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
+.navbar .navbar-toggler {
+    top: .25rem;
+    right: 1rem;
+}
+
+.navbar .form-control {
+    padding: .75rem 1rem;
+    border-width: 0;
+    border-radius: 0;
+}
+
+.form-control-dark {
+    color: #fff;
+    background-color: rgba(255, 255, 255, .1);
+}
+
+.form-control-dark:focus {
+    border-color: transparent;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
 
 .file-tree-header {

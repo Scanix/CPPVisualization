@@ -30,7 +30,11 @@ function addGraphTabs() {
             button.textContent = element.dataset.graphName;
             graphListTarget.appendChild(button);
 
-            button.addEventListener("click", () => {
+            button.addEventListener("click", (e) => {
+                document.querySelectorAll("#graph-btn button").forEach((otherBtn) => {
+                    otherBtn.classList.remove('active');
+                });
+                e.target.classList.add('active');
                 document.querySelectorAll(".graph-display").forEach((otherGraph) => {
                     otherGraph.classList.add("hidden");
                 });
@@ -39,6 +43,8 @@ function addGraphTabs() {
             });
         }
     });
+
+    document.querySelector("#graph-btn button").classList.add('active');
 }
 let previousFileTree;
 

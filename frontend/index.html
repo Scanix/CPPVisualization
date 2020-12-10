@@ -22,34 +22,27 @@
                     </h6>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <label>Selected files: </label>
-                            <select class="form-select" id="display-option">
-                                <option value="hide-others">Show only selected files</option>
-                                <option value="highlight-selected">Highlight selected files</option>
-                            </select>
-                        </li>
-                        <li class="nav-item">
-                            <label>Dependencies: </label>
+                            <label>Automatic file selection: </label>
                             <select class="form-select" id="include-option">
-                                <option value="recursively-included">Show #included files recursively</option>
-                                <option value="directly-included">Show directly #included files</option>
-                                <option value="hide-included">Hide #included files</option>
+                                <option value="directly-included">Automatically add directly related</option>
+                                <option value="recursively-included">Automatically add related files recursively</option>
+                                <option value="hide-included">Do not add other files</option>
                             </select>
                         </li>
                         <li class="nav-item">
-                            <label>Direction: </label>
+                            <label>Automatic file selection include direction: </label>
                             <select class="form-select" id="dependency-direction-option">
                                 <option value="includes">Parents</option>
                                 <option value="included-by">Children</option>
-                                <option value="both-direction">Parents and children</option>
+                                <option value="both-direction">Both</option>
                             </select>
                         </li>
                         <li class="nav-item">
                             <label>Mouse hover settings: </label>
                             <select class="form-select" id="highlight-option">
                                 <option value="includes">Highlight includes</option>
-                                <option value="included-by">Highlight files including the file</option>
-                                <option value="both-direction">Highlight all related files</option>
+                                <option value="included-by">Highlight files including the selected files</option>
+                                <option value="both-direction">Highlight both</option>
                             </select>
                         </li>
                         <li class="nav-item">

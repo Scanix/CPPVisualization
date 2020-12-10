@@ -10,21 +10,21 @@ export default class FileTree {
 
         buttons.resetSearch.addEventListener("click", () => {
             this._resetSelection();
-            dispatchEvent(new CustomEvent('treeSelectionEvent'))
+            dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: [], fileTree: this._fileTree } }))
         });
         buttons.headers.addEventListener("click", () => {
             this._selectType("header");
-            dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems } }))
+            dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems, fileTree: this._fileTree } }))
         });
         buttons.sources.addEventListener("click", () => {
             this._selectType("source");
-            dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems } }))
+            dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems, fileTree: this._fileTree } }))
         });
 
         for (let i = 0; i < selects.length; i++) {
             const select = selects[i];
             select.addEventListener("change", () => {
-                dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems } }))
+                dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems, fileTree: this._fileTree } }))
             });
         }
 
@@ -145,7 +145,7 @@ export default class FileTree {
                     folderNameDiv.classList.toggle("icon-folder-open");
                     children.classList.toggle("collapsed");
                 }
-                dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems } }))
+                dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems, fileTree: this._fileTree } }))
             });
 
             folderDiv.appendChild(folderNameDiv);
@@ -173,7 +173,7 @@ export default class FileTree {
                 } else {
                     this._selectedItems.splice(this._selectedItems.indexOf(folder.files[fileName]), 1);
                 }
-                dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems } }))
+                dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems, fileTree: this._fileTree } }))
             });
 
             folderDiv.appendChild(fileNameDiv);
@@ -237,6 +237,6 @@ export default class FileTree {
             this._displayFolder(fileTreeRoot, true)
         );
 
-        dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems.length > 0 ? this._selectedItems : projectStructure.files } }));
+        dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems.length > 0 ? this._selectedItems : projectStructure.files, fileTree: this._fileTree } }));
     }
 }

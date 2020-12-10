@@ -3,12 +3,13 @@ import FileTree from "./file-tree.js";
 import GraphChord from "./graphs/graph-chord.js";
 import GraphTree from "./graphs/graph-tree.js";
 import GraphTreeMap from "./graphs/graph-tree-map.js";
+import GraphTreeMapProject from "./graphs/graph-tree-map-project.js";
 
 import ProjectStructureLoader from "./project-structure-loader.js";
 
 // Include and add additional graphs here
 // Don't forget to create the element in index.html
-const graphs = [{ class: GraphChord, selector: "svg.d3-chord" }, { class: GraphTree, selector: "svg.d3-tree" }, { class: GraphTreeMap, selector: "svg.d3-code" }];
+const graphs = [{ class: GraphChord, selector: "svg.d3-chord" }, { class: GraphTree, selector: "svg.d3-tree" }, { class: GraphTreeMap, selector: "svg.d3-code" }, {class: GraphTreeMapProject, selector: "svg.d3-code-project"}];
 
 addGraphTabs();
 loadProject();
@@ -327,7 +328,7 @@ function loadProject() {
                 selectedFiles = projectStructure.files;
             }
 
-            rebuildGraphs(selectedFiles, projectStructure);
+            rebuildGraphs(selectedFiles, projectStructure, e.detail?.fileTree);
         });
 
         // This emits a treeSelectionEvent
@@ -340,8 +341,10 @@ function loadProject() {
     // projectStructureLoader.openDirectory("demo-cpp-project");
 }
 
-function rebuildGraphs(selectedFiles, projectStructure) {
+function rebuildGraphs(selectedFiles, projectStructure, fileTree) {
     let graphParams = getGraphParams(selectedFiles, projectStructure);
+    graphParams.fileTree = fileTree;
+
     // Remove old graphs
     for (let i = 0; i < graphs.length; i++) {
         const graph = graphs[i];

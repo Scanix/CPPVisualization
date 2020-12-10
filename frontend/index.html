@@ -51,7 +51,7 @@
                     <option value="both-direction">Highlight all related files</option>
                 </select>
                 <br><br>
-                <label>Show external libraries: </label><input type="checkbox" id="show-external" name="show-external" checked><br>
+                <label>Show external libraries: </label><input type="checkbox" id="show-external" name="show-external"><br>
                 <br>
 
             </div>
@@ -74,6 +74,9 @@
                     <div class="graph-display" data-graph-name="Line count">
                         <svg class="d3-code" overflow="auto"></svg>
                     </div>
+                    <div class="graph-display" data-graph-name="Line count">
+                        <svg class="d3-code-project" overflow="auto"></svg>
+                    </div>
                     <div class="graph-display" data-graph-name="About">
                         <h1>About</h1>
                     </div>
@@ -82,7 +85,6 @@
         </div>
     </div>
     <script type="module" src="./main.js"></script>
-    <script type="module" src="./project-structure-loader.js"></script>
     <script>
         const Masonry = require('masonry-layout')
 

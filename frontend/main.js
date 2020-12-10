@@ -3,12 +3,13 @@ import FileTree from "./file-tree.js";
 import GraphChord from "./graphs/graph-chord.js";
 import GraphTree from "./graphs/graph-tree.js";
 import GraphTreeMap from "./graphs/graph-tree-map.js";
+import GraphTreeMapProject from "./graphs/graph-tree-map-project.js";
 
 import ProjectStructureLoader from "./project-structure-loader.js";
 
 // Include and add additional graphs here
 // Don't forget to create the element in index.html
-const graphs = [{ class: GraphChord, selector: "svg.d3-chord" }, { class: GraphTree, selector: "svg.d3-tree" }, { class: GraphTreeMap, selector: "svg.d3-code" }];
+const graphs = [{ class: GraphChord, selector: "svg.d3-chord" }, { class: GraphTree, selector: "svg.d3-tree" }, { class: GraphTreeMap, selector: "svg.d3-code" }, {class: GraphTreeMapProject, selector: "svg.d3-code-project"}];
 
 addGraphTabs();
 loadProject();
@@ -38,24 +39,7 @@ function addGraphTabs() {
         }
     });
 }
-
-/**
- * @returns All given file and their includes, depending on what the user has selected in the menu
- * @param {array} files 
- * @param {array} allFiles 
- */
-function getSelectedFilesAndIncluded(files, allFiles) {
-    const includeOption = document.getElementById("include-option").value;
-
-    switch (includeOption) {
-        case "recursively-included":
-        case "directly-included":
-            return getIncludedFiles(files, allFiles, includeOption === "recursively-included");
-        case "hide-included":
-            return files;
-    }
-}
-
+let previousFileTree;
 function buildFileTree(projectStructure) {
     // Build file tree on the left
     const fileTree = new FileTree(
@@ -65,10 +49,17 @@ function buildFileTree(projectStructure) {
             resetSearch: document.getElementById("preset-all"),
             headers: document.getElementById("preset-headers"),
             sources: document.getElementById("preset-sources"),
-        }
-    );
+        },
+        [
+            document.getElementById("display-option"),
+            document.getElementById("include-option"),
+            document.getElementById("dependency-direction-option"),
+            document.getElementById("highlight-option"),
+            document.getElementById("show-external")
+        ], previousFileTree);
 
-    fileTree.update(projectStructure);
+    fileTree.update(projectStructure, previousFileTree);
+    previousFileTree = fileTree;
     return fileTree;
 }
 
@@ -249,15 +240,27 @@ function getGraphParams(selectedFiles, projectStructure) {
     };
 }
 
-function buildParentHighlight(file, allFiles) {
+function buildParentHighlight(file, allFiles, exploredFiles = []) {
+    if (exploredFiles.includes(file.id)) {
+        return file.highlightsForGraph;
+    }
+
+    exploredFiles.push(file.id);
+
+    // For each file included by the file
     for (let i = 0; i < file.includesForGraph.length; i++) {
         const includeId = file.includesForGraph[i];
+
+        // Find the included file
         for (let j = 0; j < allFiles.length; j++) {
             const fileToHighlight = allFiles[j];
             if (fileToHighlight.id === includeId) {
-                file.highlightsForGraph.push(fileToHighlight.id);
+                // Selected file exists, we add it to the list of files
+                if (!file.highlightsForGraph.includes(fileToHighlight.id)) {
+                    file.highlightsForGraph.push(fileToHighlight.id);
+                }
 
-                const parentHighlights = buildParentHighlight(fileToHighlight, allFiles);
+                const parentHighlights = buildParentHighlight(fileToHighlight, allFiles, exploredFiles);
                 for (let j = 0; j < parentHighlights.length; j++) {
                     if (!file.highlightsForGraph.includes(parentHighlights[j])) {
                         file.highlightsForGraph.push(parentHighlights[j]);
@@ -268,19 +271,30 @@ function buildParentHighlight(file, allFiles) {
     }
 
     // We also highlight the hovered file
-    file.highlightsForGraph.push(file.id);
+    if (!file.highlightsForGraph.includes(file.id)) {
+        file.highlightsForGraph.push(file.id);
+    }
 
     return file.highlightsForGraph;
 }
 
-function buildChildrenHighlight(file, allFiles) {
+function buildChildrenHighlight(file, allFiles, exploredFiles = []) {
+    if (exploredFiles.includes(file.id)) {
+        return file.highlightsForGraph;
+    }
+
+    exploredFiles.push(file.id);
+
     for (let i = 0; i < allFiles.length; i++) {
         const childFile = allFiles[i];
         for (let j = 0; j < childFile.includesForGraph.length; j++) {
             const childIncludeId = childFile.includesForGraph[j];
             if (file.id === childIncludeId) {
-                file.highlightsForGraph.push(childIncludeId);
-                const childrenHighlight = buildChildrenHighlight(childFile, allFiles);
+                if (!file.highlightsForGraph.includes(childIncludeId)) {
+                    file.highlightsForGraph.push(childIncludeId);
+                }
+
+                const childrenHighlight = buildChildrenHighlight(childFile, allFiles, exploredFiles);
                 for (let j = 0; j < childrenHighlight.length; j++) {
                     if (!file.highlightsForGraph.includes(childrenHighlight[j])) {
                         file.highlightsForGraph.push(childrenHighlight[j]);
@@ -296,40 +310,46 @@ function buildChildrenHighlight(file, allFiles) {
     return file.highlightsForGraph;
 }
 
+let previousEvent;
+
 function loadProject() {
     // Load project structure
     const projectStructureLoader = new ProjectStructureLoader((projectStructure) => {
-
-        buildFileTree(projectStructure);
-        for (let i = 0; i < graphs.length; i++) {
-            const graph = graphs[i];
-            const graphInstance = new graph.class(graph.selector);
-            graphInstance.createOrUpdateGraph(getGraphParams(projectStructure.files, projectStructure));
+        if (previousEvent) {
+            removeEventListener(previousEvent);
         }
 
         // When file tree is updated, rebuild graph
-        addEventListener("treeSelectionEvent", (e) => {
+        previousEvent = addEventListener("treeSelectionEvent", (e) => {
             let selectedFiles = [];
-            if (e.detail) {
+            if (e.detail && e.detail.files.length > 0) {
                 selectedFiles = e.detail.files;
             } else {
                 selectedFiles = projectStructure.files;
             }
 
-            // Remove old graphs
-            let graphInstances = [];
-            for (let i = 0; i < graphs.length; i++) {
-                const graph = graphs[i];
-                document.querySelector(graph.selector).innerHTML = "";
-                const graphInstance = new graph.class(graph.selector);
-                graphInstance.createOrUpdateGraph(getGraphParams(selectedFiles, projectStructure));
-                graphInstances.push(graphInstance);
-            }
+            rebuildGraphs(selectedFiles, projectStructure, e.detail?.fileTree);
         });
+
+        // This emits a treeSelectionEvent
+        buildFileTree(projectStructure);
     });
 
     // Open folder query as soon as app start
-    // projectStructureLoader.pickFile();
+    projectStructureLoader.pickFile();
     // Comment the line above and uncomment the line below to instantly open project on start
-    projectStructureLoader.openDirectory("demo-cpp-project");
+    // projectStructureLoader.openDirectory("demo-cpp-project");
+}
+
+function rebuildGraphs(selectedFiles, projectStructure, fileTree) {
+    let graphParams = getGraphParams(selectedFiles, projectStructure);
+    graphParams.fileTree = fileTree;
+
+    // Remove old graphs
+    for (let i = 0; i < graphs.length; i++) {
+        const graph = graphs[i];
+        document.querySelector(graph.selector).innerHTML = "";
+        const graphInstance = new graph.class(graph.selector);
+        graphInstance.createOrUpdateGraph(graphParams);
+    }
 }

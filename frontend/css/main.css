@@ -76,6 +76,14 @@ body {
     text-transform: uppercase;
 }
 
+.graph-display {
+    border: 1px solid rgba(0, 0, 0, .1);
+}
+
+.graph-display, .graph-display svg {
+    max-height: 800px;
+}
+
 
 /*
    * Navbar

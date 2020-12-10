@@ -149,6 +149,8 @@ body {
     padding-left: 10px;
     /* TODO: Only disable double-click select */
     user-select: none;
+    max-height: 400px;
+    overflow: auto;
 }
 
 .tree-folder {

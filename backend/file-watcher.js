@@ -1,8 +1,9 @@
 const { ipcMain, dialog, BrowserWindow } = require("electron");
 const projectParser = require("./project-parser.js");
 const chokidar = require("chokidar");
+let watcher;
 
-module.exports.addEvents = function () {
+module.exports.addEvents = async function () {
     ipcMain.on("set-project-directory", (evt, arg) => {
         watchProject(arg);
     });
@@ -22,12 +23,15 @@ module.exports.addEvents = function () {
  * Watch folder structure and parse cpp files
  * @param {string} path 
  */
-function watchProject(path) {
+async function watchProject(path) {
+    if (watcher) {
+        await watcher.close();
+    }
     // Parse and send project the first time
     parseAndSendProject(path);
 
     // Watch for any changes in the directory
-    chokidar.watch(path, { ignoreInitial: true }).on("all", (_event, changedPath) => {
+    watcher = chokidar.watch(path, { ignoreInitial: true }).on("all", (_event, changedPath) => {
         // TODO: In the future if we have more time, when a folder change only parse the project once and group changed files
         parseAndSendProject(path, changedPath);
     });

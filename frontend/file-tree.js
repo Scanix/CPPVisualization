@@ -227,5 +227,7 @@ export default class FileTree {
         this._targetElement.appendChild(
             this._displayFolder(fileTreeRoot, true)
         );
+
+        dispatchEvent(new CustomEvent('treeSelectionEvent', { detail: { files: this._selectedItems.length > 0 ? this._selectedItems : projectStructure.files } }));
     }
 }

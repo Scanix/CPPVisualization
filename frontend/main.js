@@ -308,15 +308,17 @@ function buildChildrenHighlight(file, allFiles, exploredFiles = []) {
     return file.highlightsForGraph;
 }
 
+let previousEvent;
+
 function loadProject() {
     // Load project structure
     const projectStructureLoader = new ProjectStructureLoader((projectStructure) => {
-
-        buildFileTree(projectStructure);
-        rebuildGraphs(projectStructure.files, projectStructure);
+        if (previousEvent) {
+            removeEventListener(previousEvent);
+        }
 
         // When file tree is updated, rebuild graph
-        addEventListener("treeSelectionEvent", (e) => {
+        previousEvent = addEventListener("treeSelectionEvent", (e) => {
             let selectedFiles = [];
             if (e.detail && e.detail.files.length > 0) {
                 selectedFiles = e.detail.files;
@@ -326,6 +328,9 @@ function loadProject() {
 
             rebuildGraphs(selectedFiles, projectStructure);
         });
+
+        // This emits a treeSelectionEvent
+        buildFileTree(projectStructure);
     });
 
     // Open folder query as soon as app start

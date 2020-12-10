@@ -182,7 +182,7 @@ export default class FileTree {
         return folderDiv;
     }
 
-    update(projectStructure) {
+    update(projectStructure, previousFileTree) {
         const fileTreeRoot = { files: {}, folders: { "Project folder": { files: {}, folders: {} } } };
         const fileTree = fileTreeRoot.folders["Project folder"];
 
@@ -213,6 +213,15 @@ export default class FileTree {
                     }
 
                     currentFolder = currentFolder.folders[folderName];
+                }
+
+                if (previousFileTree) {
+                    for (let i = 0; i < previousFileTree._selectedItems.length; i++) {
+                        const selectedItem = previousFileTree._selectedItems[i];
+                        if (selectedItem.id === file.id) {
+                            this._selectedItems.push(file);
+                        }
+                    }
                 }
 
                 // Found last folder, "append" file	

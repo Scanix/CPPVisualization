@@ -38,7 +38,7 @@ function addGraphTabs() {
         }
     });
 }
-
+let previousFileTree;
 function buildFileTree(projectStructure) {
     // Build file tree on the left
     const fileTree = new FileTree(
@@ -55,9 +55,10 @@ function buildFileTree(projectStructure) {
             document.getElementById("dependency-direction-option"),
             document.getElementById("highlight-option"),
             document.getElementById("show-external")
-        ]);
+        ], previousFileTree);
 
-    fileTree.update(projectStructure);
+    fileTree.update(projectStructure, previousFileTree);
+    previousFileTree = fileTree;
     return fileTree;
 }
 
@@ -340,11 +341,12 @@ function loadProject() {
 }
 
 function rebuildGraphs(selectedFiles, projectStructure) {
+    let graphParams = getGraphParams(selectedFiles, projectStructure);
     // Remove old graphs
     for (let i = 0; i < graphs.length; i++) {
         const graph = graphs[i];
         document.querySelector(graph.selector).innerHTML = "";
         const graphInstance = new graph.class(graph.selector);
-        graphInstance.createOrUpdateGraph(getGraphParams(selectedFiles, projectStructure));
+        graphInstance.createOrUpdateGraph(graphParams);
     }
 }

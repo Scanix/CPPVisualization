@@ -39,23 +39,6 @@ function addGraphTabs() {
     });
 }
 
-/**
- * @returns All given file and their includes, depending on what the user has selected in the menu
- * @param {array} files 
- * @param {array} allFiles 
- */
-function getSelectedFilesAndIncluded(files, allFiles) {
-    const includeOption = document.getElementById("include-option").value;
-
-    switch (includeOption) {
-        case "recursively-included":
-        case "directly-included":
-            return getIncludedFiles(files, allFiles, includeOption === "recursively-included");
-        case "hide-included":
-            return files;
-    }
-}
-
 function buildFileTree(projectStructure) {
     // Build file tree on the left
     const fileTree = new FileTree(

@@ -9,7 +9,7 @@ import ProjectStructureLoader from "./project-structure-loader.js";
 
 // Include and add additional graphs here
 // Don't forget to create the element in index.html
-const graphs = [{ class: GraphChord, selector: "svg.d3-chord" }, { class: GraphTree, selector: "svg.d3-tree" }, { class: GraphTreeMap, selector: "svg.d3-code" }, {class: GraphTreeMapProject, selector: "svg.d3-code-project"}];
+const graphs = [{ class: GraphChord, selector: "svg.d3-chord" }, { class: GraphTree, selector: "svg.d3-tree" }, { class: GraphTreeMap, selector: "svg.d3-code" }, { class: GraphTreeMapProject, selector: "svg.d3-code-project" }];
 
 addGraphTabs();
 loadProject();
@@ -20,16 +20,21 @@ loadProject();
  */
 function addGraphTabs() {
     const graphContainer = document.getElementById("graphs-container");
-    const graphListTarget = document.querySelector("body > nav > p");
+    const graphListTarget = document.querySelector("#graph-btn");
 
     // Add buttons to display graphs
     graphContainer.childNodes.forEach(element => {
         if (element.nodeType !== Node.TEXT_NODE) {
             const button = document.createElement("button");
+            button.classList.add("btn", "btn-sm", "btn-outline-secondary");
             button.textContent = element.dataset.graphName;
             graphListTarget.appendChild(button);
 
-            button.addEventListener("click", () => {
+            button.addEventListener("click", (e) => {
+                document.querySelectorAll("#graph-btn button").forEach((otherBtn) => {
+                    otherBtn.classList.remove('active');
+                });
+                e.target.classList.add('active');
                 document.querySelectorAll(".graph-display").forEach((otherGraph) => {
                     otherGraph.classList.add("hidden");
                 });
@@ -38,19 +43,20 @@ function addGraphTabs() {
             });
         }
     });
+
+    document.querySelector("#graph-btn button").classList.add('active');
 }
 let previousFileTree;
+
 function buildFileTree(projectStructure) {
     // Build file tree on the left
     const fileTree = new FileTree(
         document.getElementById("file-tree-files"),
-        document.getElementById("search-file"),
-        {
+        document.getElementById("search-file"), {
             resetSearch: document.getElementById("preset-all"),
             headers: document.getElementById("preset-headers"),
             sources: document.getElementById("preset-sources"),
-        },
-        [
+        }, [
             document.getElementById("display-option"),
             document.getElementById("include-option"),
             document.getElementById("dependency-direction-option"),

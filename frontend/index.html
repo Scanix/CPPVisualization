@@ -5,99 +5,114 @@
     <meta charset="UTF-8">
     <title>CPPVisualization</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
-    <nav>
-        <p>CPPVisualization
-        </p>
-    </nav>
-    <div class="container-main">
-        <div class="container-tree" id="file-tree">
-            <div class="file-tree-header">
-                <div>Selection preset</div>
-                <button id="preset-all">All</button>
-                <button id="preset-headers">Headers</button>
-                <button id="preset-sources">Sources</button>
+    <header class="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">CPPVisualization</a>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-4 d-md-block bg-light sidebar">
+                <div class="position-sticky pt-3">
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center mt-4 mb-1 text-muted">
+                        <span>Display options</span>
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <label>Selected files: </label>
+                            <select class="form-select" id="display-option">
+                                <option value="hide-others">Show only selected files</option>
+                                <option value="highlight-selected">Highlight selected files</option>
+                            </select>
+                        </li>
+                        <li class="nav-item">
+                            <label>Dependencies: </label>
+                            <select class="form-select" id="include-option">
+                                <option value="recursively-included">Show #included files recursively</option>
+                                <option value="directly-included">Show directly #included files</option>
+                                <option value="hide-included">Hide #included files</option>
+                            </select>
+                        </li>
+                        <li class="nav-item">
+                            <label>Direction: </label>
+                            <select class="form-select" id="dependency-direction-option">
+                                <option value="includes">Parents</option>
+                                <option value="included-by">Children</option>
+                                <option value="both-direction">Parents and children</option>
+                            </select>
+                        </li>
+                        <li class="nav-item">
+                            <label>Mouse hover settings: </label>
+                            <select class="form-select" id="highlight-option">
+                                <option value="includes">Highlight includes</option>
+                                <option value="included-by">Highlight files including the file</option>
+                                <option value="both-direction">Highlight all related files</option>
+                            </select>
+                        </li>
+                        <li class="nav-item">
+                            <label>Show external libraries: </label><input type="checkbox" id="show-external" name="show-external"><br>
+                        </li>
+                        <li class="nav-item">
 
-                <div>Display</div>
-                <label>Selected files: </label>
-                <select id="display-option">
-                    <option value="hide-others">Show only selected files</option>
-                    <option value="highlight-selected">Highlight selected files</option>
-                </select>
-                <br><br>
+                        </li>
+                    </ul>
 
-                <label>Dependencies: </label>
-                <select id="include-option">
-                    <option value="recursively-included">Show #included files recursively</option>
-                    <option value="directly-included">Show directly #included files</option>
-                    <option value="hide-included">Hide #included files</option>
-                </select>
-                <br>
-                <label>Direction: </label>
-                <select id="dependency-direction-option">
-                    <option value="includes">Parents</option>
-                    <option value="included-by">Children</option>
-                    <option value="both-direction">Parents and children</option>
-                </select>
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center mt-4 mb-1 text-muted">
+                        <span>Selection</span>
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <div class="btn-group w-100 mb-2">
+                                <button id="preset-all" class="btn btn-sm btn-outline-secondary">All</button>
+                                <button id="preset-headers" class="btn btn-sm btn-outline-secondary">Headers</button>
+                                <button id="preset-sources" class="btn btn-sm btn-outline-secondary">Sources</button>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <input class="form-control" type="text" id="search-file" placeholder="Search file...">
+                            <div id="file-tree-files"></div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
 
-                <br><br>
-                <label>Mouse hover settings: </label>
-                <select id="highlight-option">
-                    <option value="includes">Highlight includes</option>
-                    <option value="included-by">Highlight files including the file</option>
-                    <option value="both-direction">Highlight all related files</option>
-                </select>
-                <br><br>
-                <label>Show external libraries: </label><input type="checkbox" id="show-external" name="show-external"><br>
-                <br>
+            <main class="col-md-9 ms-sm-auto col-lg-8 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Code visualization</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div id="graph-btn" class="btn-group me-2">
+                            <!-- AUTO GENERATED BUTTON -->
+                        </div>
+                    </div>
+                </div>
 
-            </div>
-            <input type="text" id="search-file" placeholder="Search file...">
-            <div id="file-tree-files"></div>
-        </div>
-        <div class="container-grid">
-            <h2>Statistiques du projet</h2>
-            <div class="grid">
-                <div class="grid-sizer"></div>
-                <div class="gutter-sizer"></div>
-
-                <div id="graphs-container" class="grid-item grid-item--width3">
+                <div id="graphs-container" class="my-4 w-100">
                     <div class="graph-display" data-graph-name="Graph coord">
                         <svg class="d3-chord" overflow="auto"></svg>
                     </div>
-                    <div class="graph-display" data-graph-name="Graph tree">
+                    <div class="graph-display hidden" data-graph-name="Graph tree">
                         <svg class="d3-tree" overflow="auto"></svg>
                     </div>
-                    <div class="graph-display" data-graph-name="Line count">
+                    <div class="graph-display hidden" data-graph-name="Line count">
                         <svg class="d3-code" overflow="auto"></svg>
                     </div>
-                    <div class="graph-display" data-graph-name="Line count">
+                    <div class="graph-display hidden" data-graph-name="Line count">
                         <svg class="d3-code-project" overflow="auto"></svg>
                     </div>
-                    <div class="graph-display" data-graph-name="About">
+                    <div class="graph-display hidden" data-graph-name="About">
                         <h1>About</h1>
                     </div>
                 </div>
-            </div>
+
+            </main>
         </div>
     </div>
+    <script src="js/bootstrap.min.js"></script>
     <script type="module" src="./main.js"></script>
-    <script>
-        const Masonry = require('masonry-layout')
-
-        // Load masonry
-        let grid = document.querySelector('.grid');
-        let msnry = new Masonry(grid, {
-            itemSelector: '.grid-item',
-            columnWidth: '.grid-sizer',
-            percentPosition: true,
-            horizontalOrder: true,
-            gutter: '.gutter-sizer',
-        });
-    </script>
+    <script type="module" src="./project-structure-loader.js"></script>
 </body>
 
 </html>

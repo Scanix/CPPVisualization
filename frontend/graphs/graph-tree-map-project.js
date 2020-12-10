@@ -22,9 +22,6 @@ export default class GraphTreeMap extends Graph {
 
         let treemap = data => d3.treemap()
             .size([this.width, this.height])
-            .paddingOuter(3)
-            .paddingTop(19)
-            .paddingInner(1)
             .round(true)
             (d3.hierarchy(data)
                 .sum(d => d.value)
@@ -61,7 +58,12 @@ export default class GraphTreeMap extends Graph {
         node.append("rect")
             .attr("id", d => (d.nodeUid = DOMuid("node")).id)
             .attr("fill", d => {
-                return color(d.height);
+                if (!d.children) {
+                    return d3.interpolateOrRd(d.value / (this._maxLineCount * 1.2));
+                }
+                else {
+                    return d3.interpolateOrRd(d.value / (this._totalLineCount * 1.2));
+                }
             }
             )
             .attr("width", d => d.x1 - d.x0)
@@ -97,7 +99,7 @@ export default class GraphTreeMap extends Graph {
             for (let i = 0; i < selectedFiles.length; i++) {
                 const selectedFile = selectedFiles[i];
                 if (file.id === selectedFile.id) {
-                    resultData.children.push({ name: fileName, value: file.stats.lineCount/*, file: file*/ });
+                    resultData.children.push({ name: fileName, value: file.stats.lineCount });
                     this._totalLineCount += file.stats.lineCount;
                     if (file.stats.lineCount > this._maxLineCount) {
                         this._maxLineCount = file.stats.lineCount;
@@ -109,7 +111,7 @@ export default class GraphTreeMap extends Graph {
 
         for (const folderName in currentFolder.folders) {
             const folder = currentFolder.folders[folderName];
-            const newChild = { name: folderName, children: []/*, file: folder*/ };
+            const newChild = { name: folderName, children: []};
             resultData.children.push(newChild);
             this._buildData(folder, newChild, selectedFiles, depth + 1);
         }

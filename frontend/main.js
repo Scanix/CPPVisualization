@@ -330,11 +330,7 @@ function loadProject() {
     const projectStructureLoader = new ProjectStructureLoader((projectStructure) => {
 
         buildFileTree(projectStructure);
-        for (let i = 0; i < graphs.length; i++) {
-            const graph = graphs[i];
-            const graphInstance = new graph.class(graph.selector);
-            graphInstance.createOrUpdateGraph(getGraphParams(projectStructure.files, projectStructure));
-        }
+        rebuildGraphs(projectStructure.files, projectStructure);
 
         // When file tree is updated, rebuild graph
         addEventListener("treeSelectionEvent", (e) => {
@@ -345,15 +341,7 @@ function loadProject() {
                 selectedFiles = projectStructure.files;
             }
 
-            // Remove old graphs
-            let graphInstances = [];
-            for (let i = 0; i < graphs.length; i++) {
-                const graph = graphs[i];
-                document.querySelector(graph.selector).innerHTML = "";
-                const graphInstance = new graph.class(graph.selector);
-                graphInstance.createOrUpdateGraph(getGraphParams(selectedFiles, projectStructure));
-                graphInstances.push(graphInstance);
-            }
+            rebuildGraphs(selectedFiles, projectStructure);
         });
     });
 
@@ -361,4 +349,14 @@ function loadProject() {
     projectStructureLoader.pickFile();
     // Comment the line above and uncomment the line below to instantly open project on start
     // projectStructureLoader.openDirectory("demo-cpp-project");
+}
+
+function rebuildGraphs(selectedFiles, projectStructure) {
+    // Remove old graphs
+    for (let i = 0; i < graphs.length; i++) {
+        const graph = graphs[i];
+        document.querySelector(graph.selector).innerHTML = "";
+        const graphInstance = new graph.class(graph.selector);
+        graphInstance.createOrUpdateGraph(getGraphParams(selectedFiles, projectStructure));
+    }
 }

@@ -74,7 +74,6 @@
 
             <main class="col-md-9 ms-sm-auto col-lg-8 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Code visualization</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div id="graph-btn" class="btn-group me-2">
                             <!-- AUTO GENERATED BUTTON -->
@@ -83,20 +82,31 @@
                 </div>
 
                 <div id="graphs-container" class="my-4 w-100">
-                    <div class="graph-display" data-graph-name="Graph coord">
+                    <div class="graph-display" data-graph-name="Visualize includes">
                         <svg class="d3-chord" overflow="auto"></svg>
                     </div>
-                    <div class="graph-display hidden" data-graph-name="Graph tree">
+                    <div class="graph-display hidden" data-graph-name="Dependency tree">
                         <svg class="d3-tree" overflow="auto"></svg>
                     </div>
-                    <div class="graph-display hidden" data-graph-name="Line count">
+                    <div class="graph-display hidden" data-graph-name="Line count per folder">
                         <svg class="d3-code" overflow="auto"></svg>
                     </div>
-                    <div class="graph-display hidden" data-graph-name="Line count">
+                    <div class="graph-display hidden" data-graph-name="General line count">
                         <svg class="d3-code-project" overflow="auto"></svg>
                     </div>
+                    <div class="graph-display hidden" data-graph-name="Help">
+                        <p>The panel on the left let you select the data you want to display. It affects all graphics.</p>
+                        <p>The file tree in the bottom left lets you pick only the files you want to display. You can use CTRL to select multiple files. CTRL click on a folder to select all the items inside it.</p>
+                        <p>Many display options are available: </p>
+                        <ul>
+                            <li>"Automatic file selection" - This can be used to automatically add headers and source files to the graph, if they are related to the selection in the file tree.</li>
+                            <li>"Automatic file selection include direction" - This defines in which direction automatically added files are retrieved.</li>
+                            <li>"Mouse hover settings" - Defines which file should be highlighted when the mouse is hover. This only applies to the depency tree.</li>
+                            <li>"Show external libraries" - Add libraries that don't have a corresponding file to the graph.</li>
+                        </ul>
+                        <p>Buttons under the "selection" menu allows to automatically select files of a kind below.</p>
+                    </div>
                     <div class="graph-display hidden" data-graph-name="About">
-                        <h1>About</h1>
                         <h1>MSE VI - 2020</h1>
                         <h2>Bianchi Alexandre, Jeanneret Loïck, Bilali Saljajdin, Rubin Vincent</h2>
 

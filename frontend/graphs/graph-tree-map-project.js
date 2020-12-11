@@ -32,7 +32,7 @@ export default class GraphTreeMap extends Graph {
 
         const root = treemap(data);
 
-        this._svg.style("font", "8px sans-serif");
+        this._svg.style("font", "10px sans-serif");
 
         const shadow = DOMuid("shadow");
 

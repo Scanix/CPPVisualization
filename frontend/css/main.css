@@ -81,7 +81,7 @@ body {
 }
 
 .graph-display, .graph-display svg {
-    max-height: 800px;
+    max-height: 650px;
 }
 
 

@@ -12,12 +12,16 @@ function createMainWindow() {
     const win = new BrowserWindow({
         width: 1280,
         height: 720,
+        show: false,
         webPreferences: {
             nodeIntegration: true
         }
     })
 
     win.loadFile('frontend/index.html')
+    win.maximize();
+    win.show();
+    win.setMenu(null);
         // win.webContents.openDevTools()
 
     return win

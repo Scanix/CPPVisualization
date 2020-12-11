@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CPPVisualization</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <header class="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">CPPVisualization</a>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-4 d-md-block bg-light sidebar">
+                <div class="position-sticky pt-3">
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center mt-4 mb-1 text-muted">
+                        <span>Display options</span>
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <label>Automatic file selection: </label>
+                            <select class="form-select" id="include-option">
+                                <option value="directly-included">Automatically add directly related</option>
+                                <option value="recursively-included">Automatically add related files recursively</option>
+                                <option value="hide-included">Do not add other files</option>
+                            </select>
+                        </li>
+                        <li class="nav-item">
+                            <label>Automatic file selection include direction: </label>
+                            <select class="form-select" id="dependency-direction-option">
+                                <option value="includes">Parents</option>
+                                <option value="included-by">Children</option>
+                                <option value="both-direction">Both</option>
+                            </select>
+                        </li>
+                        <li class="nav-item">
+                            <label>Mouse hover settings: </label>
+                            <select class="form-select" id="highlight-option">
+                                <option value="includes">Highlight includes</option>
+                                <option value="included-by">Highlight files including the selected files</option>
+                                <option value="both-direction">Highlight both</option>
+                            </select>
+                        </li>
+                        <li class="nav-item">
+                            <label>Show external libraries: </label><input type="checkbox" id="show-external" name="show-external"><br>
+                        </li>
+                        <li class="nav-item">
+
+                        </li>
+                    </ul>
+
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center mt-4 mb-1 text-muted">
+                        <span>Selection</span>
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <div class="btn-group w-100 mb-2">
+                                <button id="preset-all" class="btn btn-sm btn-outline-secondary">All</button>
+                                <button id="preset-headers" class="btn btn-sm btn-outline-secondary">Headers</button>
+                                <button id="preset-sources" class="btn btn-sm btn-outline-secondary">Sources</button>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <input class="form-control" type="text" id="search-file" placeholder="Search file...">
+                            <div id="file-tree-files"></div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-8 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div id="graph-btn" class="btn-group me-2">
+                            <!-- AUTO GENERATED BUTTON -->
+                        </div>
+                    </div>
+                </div>
+
+                <div id="graphs-container" class="my-4 w-100">
+                    <div class="graph-display" data-graph-name="Visualize includes">
+                        <svg class="d3-chord" overflow="auto"></svg>
+                    </div>
+                    <div class="graph-display hidden" data-graph-name="Dependency tree">
+                        <svg class="d3-tree" overflow="auto"></svg>
+                    </div>
+                    <div class="graph-display hidden" data-graph-name="Line count per folder">
+                        <svg class="d3-code" overflow="auto"></svg>
+                    </div>
+                    <div class="graph-display hidden" data-graph-name="General line count">
+                        <svg class="d3-code-project" overflow="auto"></svg>
+                    </div>
+                    <div class="graph-display hidden" data-graph-name="Help">
+                        <p>The panel on the left let you select the data you want to display. It affects all graphics.</p>
+                        <p>The file tree in the bottom left lets you pick only the files you want to display. You can use CTRL to select multiple files. CTRL click on a folder to select all the items inside it.</p>
+                        <p>Many display options are available: </p>
+                        <ul>
+                            <li>"Automatic file selection" - This can be used to automatically add headers and source files to the graph, if they are related to the selection in the file tree.</li>
+                            <li>"Automatic file selection include direction" - This defines in which direction automatically added files are retrieved.</li>
+                            <li>"Mouse hover settings" - Defines which file should be highlighted when the mouse is hover. This only applies to the depency tree.</li>
+                            <li>"Show external libraries" - Add libraries that don't have a corresponding file to the graph.</li>
+                        </ul>
+                        <p>Buttons under the "selection" menu allows to automatically select files of a kind below.</p>
+                    </div>
+                    <div class="graph-display hidden" data-graph-name="About">
+                        <h1>MSE VI - 2020</h1>
+                        <h2>Bianchi Alexandre, Jeanneret Loïck, Bilali Saljajdin, Rubin Vincent</h2>
+
+                        <p>This project was carried out as part of an MSE project for the visualization course.</p>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="module" src="./main.js"></script>
+    <script type="module" src="./project-structure-loader.js"></script>
+</body>
+
+</html>

@@ -87,8 +87,8 @@ export default class ChordGraph extends Graph {
             zoomPart.attr("transform", (e.transform));
         })
 
-        d3.select(this._svgClass)
-            .call(zoom)
+        d3.select(this._svgClass).call(zoom);
+        d3.select(this._svgClass).call(zoom.transform, d3.zoomIdentity.scale(1));
 
         const group = zoomPart.append("g")
             .attr("font-size", 10)

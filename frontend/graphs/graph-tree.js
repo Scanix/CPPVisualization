@@ -104,6 +104,7 @@ export default class GraphTree extends Graph {
         })
 
         d3.select(this._svgClass).call(zoom);
+        d3.select(this._svgClass).call(zoom.transform, d3.zoomIdentity.scale(1));
 
         // Initialize the links
         const link = zoomArea.append("g")

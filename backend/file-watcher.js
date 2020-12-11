@@ -1,6 +1,7 @@
 const { ipcMain, dialog, BrowserWindow } = require("electron");
 const projectParser = require("./project-parser.js");
 const chokidar = require("chokidar");
+const { exit } = require("process");
 let watcher;
 
 module.exports.addEvents = async function () {
@@ -12,8 +13,12 @@ module.exports.addEvents = async function () {
         dialog.showOpenDialog({
             properties: ["openDirectory"]
         }).then((files) => {
-            if (files !== undefined) {
+            if (files !== undefined && !files.canceled) {
                 watchProject(files.filePaths[0]);
+            }
+            else {
+                console.log("You must pick a folder to use the application");
+                exit();
             }
         });
     })

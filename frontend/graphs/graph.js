@@ -1,8 +1,8 @@
 const d3 = require("d3")
 
 export default class Graph {
-    width = 500
-    height = 500
+    width = 650
+    height = 650
 
     constructor(svgClass) {
         this._svgClass = svgClass;

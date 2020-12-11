@@ -57,7 +57,6 @@ function buildFileTree(projectStructure) {
             headers: document.getElementById("preset-headers"),
             sources: document.getElementById("preset-sources"),
         }, [
-            document.getElementById("display-option"),
             document.getElementById("include-option"),
             document.getElementById("dependency-direction-option"),
             document.getElementById("highlight-option"),
@@ -146,7 +145,6 @@ function addIncludedFiles(files, allFilesById, recursive, direction) {
 function getGraphParams(selectedFiles, projectStructure) {
     const includeOption = document.getElementById("include-option").value;
     const includeDirection = document.getElementById("dependency-direction-option").value;
-    const displayOption = document.getElementById("display-option").value;
     const highlightOption = document.getElementById("highlight-option").value;
     const showExternalLibrary = document.getElementById("show-external").checked;
 
@@ -241,8 +239,7 @@ function getGraphParams(selectedFiles, projectStructure) {
 
     return {
         selectedFiles: files,
-        projectStructure,
-        hoveredAction: displayOption
+        projectStructure
     };
 }
 
